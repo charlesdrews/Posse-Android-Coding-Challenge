@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.DataManager;
 import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.DevService;
 import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.Location;
-import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.Programmer;
+import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.Person;
 
 import java.util.List;
 
@@ -22,22 +22,22 @@ public class DatabaseHelper extends SQLiteOpenHelper implements DataManager {
     }
 
     @Override
-    public List<Programmer> getAllProgrammers() {
+    public List<Person> getAllProgrammers() {
         return null;
     }
 
     @Override
-    public List<Programmer> getProgrammersByLocationId(int locationId) {
+    public List<Person> getProgrammersByLocationId(int locationId) {
         return null;
     }
 
     @Override
-    public List<Programmer> getProgrammersByDevServiceId(int devServiceId) {
+    public List<Person> getProgrammersByDevServiceId(int devServiceId) {
         return null;
     }
 
     @Override
-    public Programmer getProgrammerById(int programmerId) {
+    public Person getProgrammerById(int programmerId) {
         return null;
     }
 
@@ -72,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements DataManager {
     }
 
     @Override
-    public int addProgrammer(Programmer programmer) {
+    public int addProgrammer(Person person) {
         return 0;
     }
 

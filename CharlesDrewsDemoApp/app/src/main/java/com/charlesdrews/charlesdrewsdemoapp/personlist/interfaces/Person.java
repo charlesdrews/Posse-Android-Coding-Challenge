@@ -3,7 +3,7 @@ package com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces;
 /**
  * Created by charlie on 8/13/16.
  */
-public interface Programmer {
+public interface Person {
     int getId();
     String getName();
     String getFavoriteColor();

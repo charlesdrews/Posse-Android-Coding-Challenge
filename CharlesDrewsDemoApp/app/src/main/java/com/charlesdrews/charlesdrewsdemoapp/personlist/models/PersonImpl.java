@@ -1,11 +1,11 @@
 package com.charlesdrews.charlesdrewsdemoapp.personlist.models;
 
-import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.Programmer;
+import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.Person;
 
 /**
  * Created by charlie on 8/13/16.
  */
-public class ProgrammerImpl implements Programmer {
+public class PersonImpl implements Person {
     @Override
     public int getId() {
         return 0;

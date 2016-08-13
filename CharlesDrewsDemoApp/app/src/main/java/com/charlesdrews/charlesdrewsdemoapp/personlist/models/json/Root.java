@@ -1,18 +1,16 @@
 package com.charlesdrews.charlesdrewsdemoapp.personlist.models.json;
 
-/**
- * Created by charlie on 8/13/16.
- */
-//@Generated("org.jsonschema2pojo")
-public class JsonRoot {
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-//    @SerializedName("status")
-//    @Expose
+public class Root {
+
+    @SerializedName("status")
+    @Expose
     private int status;
-
-//    @SerializedName("response")
-//    @Expose
-    private JsonResponse response;
+    @SerializedName("response")
+    @Expose
+    private Response response;
 
     /**
      *
@@ -37,7 +35,7 @@ public class JsonRoot {
      * @return
      * The response
      */
-    public JsonResponse getResponse() {
+    public Response getResponse() {
         return response;
     }
 
@@ -46,7 +44,8 @@ public class JsonRoot {
      * @param response
      * The response
      */
-    public void setResponse(JsonResponse response) {
+    public void setResponse(Response response) {
         this.response = response;
     }
+
 }

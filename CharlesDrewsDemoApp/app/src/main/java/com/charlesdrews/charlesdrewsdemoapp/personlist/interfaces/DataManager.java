@@ -3,15 +3,15 @@ package com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces;
 import java.util.List;
 
 /**
- * Data manager to store and retrieve Location, DevService, and Programmer objects
+ * Data manager to store and retrieve Location, DevService, and Person objects
  *
  * Created by charlie on 8/13/16.
  */
 public interface DataManager {
-    List<Programmer> getAllProgrammers();
-    List<Programmer> getProgrammersByLocationId(int locationId);
-    List<Programmer> getProgrammersByDevServiceId(int devServiceId);
-    Programmer getProgrammerById(int programmerId);
+    List<Person> getAllPeople();
+    List<Person> getPeopleByLocationId(int locationId);
+    List<Person> getPeopleByDevServiceId(int devServiceId);
+    Person getpersonById(int personId);
 
     List<Location> getAllLocations();
     List<Location> getLocationsByDevServiceId(int devServiceId);
@@ -22,11 +22,11 @@ public interface DataManager {
     DevService getDevServiceById(int devServiceId);
 
     /**
-     * Add a Programmer to data storage
-     * @param programmer
-     * @return int id of Programmer if added successfully, else -1
+     * Add a Person to data storage
+     * @param person
+     * @return int id of Person if added successfully, else -1
      */
-    int addProgrammer(Programmer programmer);
+    int addperson(Person person);
 
     /**
      * Add a Location to data storage

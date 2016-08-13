@@ -2,7 +2,7 @@ package com.charlesdrews.charlesdrewsdemoapp.personlist.models;
 
 import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.DevService;
 import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.Location;
-import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.Programmer;
+import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.Person;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class LocationImpl implements Location {
     }
 
     @Override
-    public List<Programmer> getProgrammers() {
+    public List<Person> getProgrammers() {
         return null;
     }
 }

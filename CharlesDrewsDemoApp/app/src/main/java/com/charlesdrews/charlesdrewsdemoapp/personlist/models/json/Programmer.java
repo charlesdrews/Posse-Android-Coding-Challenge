@@ -1,35 +1,28 @@
 package com.charlesdrews.charlesdrewsdemoapp.personlist.models.json;
 
-/**
- * Created by charlie on 8/13/16.
- */
-//@Generated("org.jsonschema2pojo")
-public class JsonProgrammer {
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-//    @SerializedName("name")
-//    @Expose
+public class Programmer {
+
+    @SerializedName("name")
+    @Expose
     private String name;
-
-//    @SerializedName("favorite_color")
-//    @Expose
+    @SerializedName("favorite_color")
+    @Expose
     private String favoriteColor;
-
-//    @SerializedName("age")
-//    @Expose
+    @SerializedName("age")
+    @Expose
     private int age;
-
-//    @SerializedName("weight")
-//    @Expose
+    @SerializedName("weight")
+    @Expose
     private double weight;
-
-//    @SerializedName("phone")
-//    @Expose
+    @SerializedName("phone")
+    @Expose
     private String phone;
-
-//    @SerializedName("is_artist")
-//    @Expose
+    @SerializedName("is_artist")
+    @Expose
     private boolean isArtist;
-
 
     /**
      *
@@ -138,4 +131,5 @@ public class JsonProgrammer {
     public void setIsArtist(boolean isArtist) {
         this.isArtist = isArtist;
     }
+
 }

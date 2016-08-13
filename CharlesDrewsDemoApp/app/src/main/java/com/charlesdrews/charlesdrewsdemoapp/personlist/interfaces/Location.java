@@ -12,5 +12,5 @@ public interface Location {
     String getPostalCode();
     String getCountry();
     List<DevService> getDevServices();
-    List<Programmer> getProgrammers();
+    List<Person> getPeople();
 }

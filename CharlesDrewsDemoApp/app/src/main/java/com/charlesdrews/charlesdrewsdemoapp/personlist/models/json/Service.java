@@ -2,20 +2,17 @@ package com.charlesdrews.charlesdrewsdemoapp.personlist.models.json;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by charlie on 8/13/16.
- */
-//@Generated("org.jsonschema2pojo")
-public class JsonService {
+public class Service {
 
-//    @SerializedName("platform")
-//    @Expose
+    @SerializedName("platform")
+    @Expose
     private String platform;
-
-//    @SerializedName("programmers")
-//    @Expose
-    private List<JsonProgrammer> programmers = new ArrayList<JsonProgrammer>();
+    @SerializedName("programmers")
+    @Expose
+    private List<Programmer> programmers = new ArrayList<Programmer>();
 
     /**
      *
@@ -40,7 +37,7 @@ public class JsonService {
      * @return
      * The programmers
      */
-    public List<JsonProgrammer> getProgrammers() {
+    public List<Programmer> getProgrammers() {
         return programmers;
     }
 
@@ -49,7 +46,8 @@ public class JsonService {
      * @param programmers
      * The programmers
      */
-    public void setProgrammers(List<JsonProgrammer> programmers) {
+    public void setProgrammers(List<Programmer> programmers) {
         this.programmers = programmers;
     }
+
 }

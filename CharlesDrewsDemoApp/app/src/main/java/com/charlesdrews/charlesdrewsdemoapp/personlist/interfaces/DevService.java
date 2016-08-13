@@ -9,5 +9,5 @@ public interface DevService {
     int getId();
     String getPlatform();
     List<Location> getLocations();
-    List<Programmer> getProgrammers();
+    List<Person> getPeople();
 }

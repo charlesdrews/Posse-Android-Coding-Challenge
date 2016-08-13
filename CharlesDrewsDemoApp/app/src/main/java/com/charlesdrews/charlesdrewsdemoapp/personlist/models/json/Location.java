@@ -2,37 +2,29 @@ package com.charlesdrews.charlesdrewsdemoapp.personlist.models.json;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by charlie on 8/13/16.
- */
-//@Generated("org.jsonschema2pojo")
-public class JsonLocation {
+public class Location {
 
-//    @SerializedName("public_id")
-//    @Expose
+    @SerializedName("public_id")
+    @Expose
     private String publicId;
-
-//    @SerializedName("locality")
-//    @Expose
+    @SerializedName("locality")
+    @Expose
     private String locality;
-
-//    @SerializedName("region")
-//    @Expose
+    @SerializedName("region")
+    @Expose
     private String region;
-
-//    @SerializedName("postal_code")
-//    @Expose
+    @SerializedName("postal_code")
+    @Expose
     private String postalCode;
-
-//    @SerializedName("country")
-//    @Expose
+    @SerializedName("country")
+    @Expose
     private String country;
-
-//    @SerializedName("services")
-//    @Expose
-    private List<JsonService> services = new ArrayList<JsonService>();
-
+    @SerializedName("services")
+    @Expose
+    private List<Service> services = new ArrayList<Service>();
 
     /**
      *
@@ -129,7 +121,7 @@ public class JsonLocation {
      * @return
      * The services
      */
-    public List<JsonService> getServices() {
+    public List<Service> getServices() {
         return services;
     }
 
@@ -138,7 +130,8 @@ public class JsonLocation {
      * @param services
      * The services
      */
-    public void setServices(List<JsonService> services) {
+    public void setServices(List<Service> services) {
         this.services = services;
     }
+
 }
