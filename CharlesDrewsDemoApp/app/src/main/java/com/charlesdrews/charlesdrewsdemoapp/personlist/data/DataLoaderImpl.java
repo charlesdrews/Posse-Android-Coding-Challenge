@@ -6,7 +6,7 @@ import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.DataManager;
 /**
  * Created by charlie on 8/13/16.
  */
-public class DataLoaderImpl implements DataLoader {
+public final class DataLoaderImpl implements DataLoader {
     @Override
     public boolean loadAndPersistData(DataManager dataManager) {
         return false;

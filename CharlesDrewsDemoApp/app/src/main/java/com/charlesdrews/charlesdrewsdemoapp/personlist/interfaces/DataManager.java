@@ -1,44 +1,53 @@
 package com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces;
 
+import com.charlesdrews.charlesdrewsdemoapp.persondetail.interfaces.PersonFullDetail;
+
 import java.util.List;
 
 /**
- * Data manager to store and retrieve Location, DevService, and Person objects
+ * Data manager to store and retrieve PersonFullDetail objects
  *
  * Created by charlie on 8/13/16.
  */
 public interface DataManager {
-    List<Person> getAllPeople();
-    List<Person> getPeopleByLocationId(int locationId);
-    List<Person> getPeopleByDevServiceId(int devServiceId);
-    Person getpersonById(int personId);
-
-    List<Location> getAllLocations();
-    List<Location> getLocationsByDevServiceId(int devServiceId);
-    Location getLocationById(int locationId);
-
-    List<DevService> getAllDevServices();
-    List<DevService> getDevServicesByLocationId(int locationId);
-    DevService getDevServiceById(int devServiceId);
 
     /**
-     * Add a Person to data storage
+     * Get a list of all people in the database with the minimum detail needed for the list feature
+     * @return a List of PersonMinDetail objects
+     */
+    List<PersonMinDetail> getAllPeopleForListFeature();
+
+    /**
+     * Get a list of people in the database matching the query, with the minimum detail needed
+     * for the list feature
+     * @param query
+     * @return a List of PersonMinDetail objects matching the query
+     */
+    List<PersonMinDetail> searchPeopleForListFeature(String query);
+
+    /**
+     * Get a person by id with all detail needed for the detail feature
+     * @param personId
+     * @return a PersonFullDetail object if id found in database, else null
+     */
+    PersonFullDetail getFullPersonDetailById(long personId);
+
+    /**
+     * Add a person to the database
      * @param person
-     * @return int id of Person if added successfully, else -1
+     * @return long id of person if added successfully, else -1
      */
-    int addperson(Person person);
+    long addPerson(PersonFullDetail person);
 
     /**
-     * Add a Location to data storage
-     * @param location
-     * @return int id of Location if added successfully, else -1
+     * Get a list of location names present in the database
+     * @return a List of location name Strings
      */
-    int addLocation(Location location);
+    List<String> getLocationNames();
 
     /**
-     * Add a DevService to data storage
-     * @param devService
-     * @return int id of DevService if added successfully, else -1
+     * Get a list of platform names present in the database
+     * @return a List of platform name Strings
      */
-    int addDevService(DevService devService);
+    List<String> getPlatformNames();
 }
