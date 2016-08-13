@@ -10,6 +10,7 @@ import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.DataManager;
 import com.charlesdrews.charlesdrewsdemoapp.persondetail.interfaces.PersonFullDetail;
 import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.PersonMinDetail;
 import com.charlesdrews.charlesdrewsdemoapp.persondetail.models.PersonFullDetailImpl;
+import com.charlesdrews.charlesdrewsdemoapp.personlist.models.PersonMinDetailImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -222,7 +223,14 @@ public class DatabaseHelper extends SQLiteOpenHelper implements DataManager {
             int localityIndex = cursor.getColumnIndex(DatabaseContract.PersonTable.COL_NAME_LOCALITY);
 
             while (!cursor.isAfterLast()) {
-                PersonMinDetail
+                PersonMinDetail person = new PersonMinDetailImpl.Builder()
+                        .setFirstName(cursor.getString(firstNameIndex))
+                        .setFavColor(cursor.getString(favColorIndex))
+                        .setPlatform(cursor.getString(platformIndex))
+                        .setPlatform(cursor.getString(localityIndex))
+                        .build();
+
+                people.add(person);
 
                 cursor.moveToNext();
             }
