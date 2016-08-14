@@ -1,19 +1,25 @@
 package com.charlesdrews.charlesdrewsdemoapp.data.sources.remote;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
-import com.charlesdrews.charlesdrewsdemoapp.data.models.PersonFullDetail;
+import com.charlesdrews.charlesdrewsdemoapp.R;
+import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleDataSource;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Location;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Programmer;
-import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Response;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Root;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Service;
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * For this app, the data is being loaded from a local file in res/raw, but I wanted to set it up
@@ -23,38 +29,67 @@ import java.io.Reader;
  * Created by charlie on 8/14/16.
  */
 public class PeopleRemoteDataSource implements PeopleDataSource {
+    private static final String TAG = "PeopleRemoteDataSource";
     private static final String RAW_DATA_FILE ="raw/android_model_challenge.json";
 
-    @Override
-    public void getPeople(@NonNull GetPeopleMinDetailCallback callback) {
-        InputStream inputStream = this.getClass().getClassLoader()
-                .getResourceAsStream(RAW_DATA_FILE);
+    private static PeopleRemoteDataSource sInstance;
 
-        Reader reader = new InputStreamReader(inputStream);
+    // If this really were getting remote data via HTTP I wouldn't need this context,
+    // but to read a local file from res/raw I do need it for now
+    private WeakReference<Context> mContextWeakReference;
+
+    private PeopleRemoteDataSource(@NonNull Context context) {
+        mContextWeakReference = new WeakReference<>(context);
+    }
+
+    public static PeopleRemoteDataSource getInstance(@NonNull Context context) {
+        if (sInstance == null) {
+            sInstance = new PeopleRemoteDataSource(context);
+        }
+        return sInstance;
+    }
+
+    @Override
+    public void getPeople(@NonNull GetPeopleCallback callback) {
+        InputStream raw = mContextWeakReference.get().getResources()
+                .openRawResource(R.raw.android_model_challenge);
+
+        Reader reader = new BufferedReader(new InputStreamReader(raw));
 
         Gson gson = new Gson();
 
-        Root dataRoot = gson.fromJson(reader, Root.class);
+        Root dataRoot = null;
+
+        try {
+            dataRoot = gson.fromJson(reader, Root.class);
+        } catch (Exception e) {
+            Log.e(TAG, "getPeople: error converting json file via gson", e);
+            callback.onDataNotAvailable();
+            return;
+        }
+
+        List<Person> people = new ArrayList<>();
 
         for (Location location : dataRoot.getResponse().getLocations()) {
-
-            // get location values
-            String locationPublicId = location.getPublicId();
-            String locality = location.getLocality();
-            String region = location.getRegion();
-            String postalCode = location.getPostalCode();
-            
-
             for (Service service : location.getServices()) {
-                // get service value
-
                 for (Programmer programmer : service.getProgrammers()) {
-                    // get programmer values
 
-                    // save
+                    Person person = new Person.Builder()
+                            .setLocation(location)
+                            .setService(service)
+                            .setProgrammer(programmer)
+                            .build();
+
+                    people.add(person);
                 }
             }
         }
+
+        if (people.size() == 0) {
+            callback.onDataNotAvailable();
+        }
+
+        callback.onPeopleLoaded(people);
     }
 
     /**
@@ -64,9 +99,8 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
      * @param callback
      */
     @Override
-    public void searchPeople(@NonNull String query, @NonNull GetPeopleMinDetailCallback callback) {
-
-
+    public void searchPeople(@NonNull String query, @NonNull GetPeopleCallback callback) {
+        callback.onDataNotAvailable();
     }
 
     /**
@@ -76,19 +110,20 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
      * @param callback
      */
     @Override
-    public void getPerson(@NonNull long personId, @NonNull GetPersonFullDetailCallback callback) {
-
+    public void getPerson(@NonNull long personId, @NonNull GetPersonDetailCallback callback) {
+        callback.onDataNotAvailable();
     }
 
     /**
      * This is just a stub - if the JSON were coming from an API instead of a local file, then
      * this method would be implemented.
      * @param person
+     * @param callback
      * @return
      */
     @Override
-    public boolean savePerson(@NonNull PersonFullDetail person) {
-        return false;
+    public void savePerson(@NonNull Person person, @NonNull SavePersonCallback callback) {
+        callback.onPersonNotSaved();
     }
 
     /**
@@ -98,6 +133,6 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
      */
     @Override
     public void getLocationAndServiceValues(@NonNull GetLocationAndServiceValuesCallback callback) {
-
+        callback.onDataNotAvailable();
     }
 }

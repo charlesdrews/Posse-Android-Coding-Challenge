@@ -2,8 +2,7 @@ package com.charlesdrews.charlesdrewsdemoapp.data.sources;
 
 import android.support.annotation.NonNull;
 
-import com.charlesdrews.charlesdrewsdemoapp.data.models.PersonFullDetail;
-import com.charlesdrews.charlesdrewsdemoapp.data.models.PersonMinDetail;
+import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 
 import java.util.List;
 
@@ -12,34 +11,33 @@ import java.util.List;
  */
 public interface PeopleDataSource {
 
-    interface GetPeopleMinDetailCallback {
-
-        void onPeopleLoaded(List<PersonMinDetail> people);
-
+    interface GetPeopleCallback {
+        void onPeopleLoaded(List<Person> people);
         void onDataNotAvailable();
     }
 
-    interface GetPersonFullDetailCallback {
-
-        void onPersonLoaded(PersonFullDetail person);
-
+    interface GetPersonDetailCallback {
+        void onPersonLoaded(Person person);
         void onDataNotAvailable();
+    }
+
+    interface SavePersonCallback {
+        void onPersonSaved(long savedPersonId);
+        void onPersonNotSaved();
     }
 
     interface GetLocationAndServiceValuesCallback {
-
         void onLocationAndServiceValuesLoaded(List<String> locations, List<String> services);
-
         void onDataNotAvailable();
     }
 
-    void getPeople(@NonNull GetPeopleMinDetailCallback callback);
+    void getPeople(@NonNull GetPeopleCallback callback);
 
-    void searchPeople(@NonNull String query, @NonNull GetPeopleMinDetailCallback callback);
+    void searchPeople(@NonNull String query, @NonNull GetPeopleCallback callback);
 
-    void getPerson(@NonNull long personId, @NonNull GetPersonFullDetailCallback callback);
+    void getPerson(@NonNull long personId, @NonNull GetPersonDetailCallback callback);
 
-    boolean savePerson(@NonNull PersonFullDetail person);
+    void savePerson(@NonNull Person person, @NonNull SavePersonCallback callback);
 
     void getLocationAndServiceValues(@NonNull GetLocationAndServiceValuesCallback callback);
 }

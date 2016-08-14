@@ -1,24 +1,22 @@
-package com.charlesdrews.charlesdrewsdemoapp.data.models;
+package com.charlesdrews.charlesdrewsdemoapp.data;
 
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Location;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Programmer;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Service;
 
 /**
- * Models a person with full detail needed for the detail feature.
- * Uses the builder pattern since there are so many parameters.
+ * Models a person (programmer info + service/platform info + location info)
  *
  * Created by charlie on 8/13/16.
  */
-public class PersonFullDetailImpl implements PersonFullDetail {
-
+public class Person {
     private final int mId, mAge;
     private final String mFirstName, mFavColor, mPhoneNum, mPlatform, mLocationPublicId;
     private final String mLocality, mRegion, mPostalCode, mCountry;
     private final double mWeight;
     private final boolean mIsArtist;
 
-    public PersonFullDetailImpl(
+    public Person(
             final int id, final int age, final String locationPublicId, final String firstName,
             final String favColor, final String phoneNum, final String platform,
             final String locality, final String region, final String postalCode,
@@ -38,67 +36,54 @@ public class PersonFullDetailImpl implements PersonFullDetail {
         mIsArtist = isArtist;
     }
 
-    @Override
     public int getId() {
         return mId;
     }
 
-    @Override
     public String getFirstName() {
         return mFirstName;
     }
 
-    @Override
     public String getFavoriteColor() {
         return mFavColor;
     }
 
-    @Override
     public int getAge() {
         return mAge;
     }
 
-    @Override
     public double getWeight() {
         return mWeight;
     }
 
-    @Override
     public String getPhoneNumber() {
         return mPhoneNum;
     }
 
-    @Override
     public boolean isArtist() {
         return mIsArtist;
     }
 
-    @Override
     public String getPlatform() {
         return mPlatform;
     }
 
-    @Override
     public String getLocationPublicId() {
         return mLocationPublicId;
     }
 
-    @Override
     public String getLocality() {
         return mLocality;
     }
 
-    @Override
     public String getRegion() {
         return mRegion;
     }
 
-    @Override
     public String getPostalCode() {
         return mPostalCode;
     }
 
-    @Override
     public String getCountry() {
         return mCountry;
     }
@@ -110,6 +95,11 @@ public class PersonFullDetailImpl implements PersonFullDetail {
         private double mWeight;
         private boolean mIsArtist;
 
+        /**
+         * Use a GSON-generated Location object to build a Person
+         * @param location
+         * @return
+         */
         public Builder setLocation(Location location) {
             mLocationPublicId = location.getPublicId();
             mLocality = location.getLocality();
@@ -119,11 +109,21 @@ public class PersonFullDetailImpl implements PersonFullDetail {
             return this;
         }
 
+        /**
+         * Use a GSON-generated Service object to build a Person
+         * @param service
+         * @return
+         */
         public Builder setService(Service service) {
             mPlatform = service.getPlatform();
             return this;
         }
 
+        /**
+         * Use a GSON-generated Programmer object to build a Person
+         * @param programmer
+         * @return
+         */
         public Builder setProgrammer(Programmer programmer) {
             mFirstName = programmer.getName();
             mFavColor = programmer.getFavoriteColor();
@@ -199,8 +199,8 @@ public class PersonFullDetailImpl implements PersonFullDetail {
             return this;
         }
 
-        public PersonFullDetailImpl build() {
-            return new PersonFullDetailImpl(mId, mAge, mLocationPublicId, mFirstName, mFavColor, mPhoneNum,
+        public Person build() {
+            return new Person(mId, mAge, mLocationPublicId, mFirstName, mFavColor, mPhoneNum,
                     mPlatform, mLocality, mRegion, mPostalCode, mCountry, mWeight, mIsArtist);
         }
     }
