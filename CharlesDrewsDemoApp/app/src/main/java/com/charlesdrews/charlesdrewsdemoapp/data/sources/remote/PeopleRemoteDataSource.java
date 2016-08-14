@@ -30,7 +30,6 @@ import java.util.List;
  */
 public class PeopleRemoteDataSource implements PeopleDataSource {
     private static final String TAG = "PeopleRemoteDataSource";
-    private static final String RAW_DATA_FILE ="raw/android_model_challenge.json";
 
     private static PeopleRemoteDataSource sInstance;
 

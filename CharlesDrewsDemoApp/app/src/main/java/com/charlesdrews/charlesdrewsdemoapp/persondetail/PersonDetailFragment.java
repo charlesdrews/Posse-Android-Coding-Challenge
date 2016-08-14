@@ -12,10 +12,10 @@ import com.charlesdrews.charlesdrewsdemoapp.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProgrammerDetailFragment extends Fragment {
+public class PersonDetailFragment extends Fragment {
 
 
-    public ProgrammerDetailFragment() {
+    public PersonDetailFragment() {
         // Required empty public constructor
     }
 

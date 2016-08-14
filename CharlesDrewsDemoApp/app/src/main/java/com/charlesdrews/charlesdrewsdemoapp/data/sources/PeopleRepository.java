@@ -10,7 +10,7 @@ import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.PeopleRemoteData
 import java.util.List;
 
 /**
- * Provide a repository by utilizing both local and remote data sources
+ * Provide a people repository by utilizing both local and remote data sources
  *
  * Created by charlie on 8/14/16.
  */

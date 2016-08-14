@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.charlesdrews.charlesdrewsdemoapp.R;
 
-public class ProgrammerDetailActivity extends AppCompatActivity {
+public class PersonDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

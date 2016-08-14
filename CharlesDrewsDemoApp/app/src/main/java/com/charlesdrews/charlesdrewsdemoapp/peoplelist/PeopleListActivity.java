@@ -18,8 +18,8 @@ import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleRepository;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+public class PeopleListActivity extends AppCompatActivity {
+    private static final String TAG = "PeopleListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -11,9 +11,9 @@ import com.charlesdrews.charlesdrewsdemoapp.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PersonListFragment extends Fragment {
+public class PeopleListFragment extends Fragment {
 
-    public PersonListFragment() {
+    public PeopleListFragment() {
     }
 
     @Override
