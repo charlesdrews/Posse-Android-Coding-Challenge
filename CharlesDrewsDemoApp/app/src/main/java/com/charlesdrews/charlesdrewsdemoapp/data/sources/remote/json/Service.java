@@ -1,4 +1,4 @@
-package com.charlesdrews.charlesdrewsdemoapp.personlist.models.json;
+package com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json;
 
 import java.util.ArrayList;
 import java.util.List;

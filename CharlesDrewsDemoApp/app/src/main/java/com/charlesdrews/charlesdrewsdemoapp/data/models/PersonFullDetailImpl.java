@@ -1,9 +1,8 @@
-package com.charlesdrews.charlesdrewsdemoapp.persondetail.models;
+package com.charlesdrews.charlesdrewsdemoapp.data.models;
 
-import com.charlesdrews.charlesdrewsdemoapp.persondetail.interfaces.PersonFullDetail;
-import com.charlesdrews.charlesdrewsdemoapp.personlist.models.json.Location;
-import com.charlesdrews.charlesdrewsdemoapp.personlist.models.json.Programmer;
-import com.charlesdrews.charlesdrewsdemoapp.personlist.models.json.Service;
+import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Location;
+import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Programmer;
+import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Service;
 
 /**
  * Models a person with full detail needed for the detail feature.

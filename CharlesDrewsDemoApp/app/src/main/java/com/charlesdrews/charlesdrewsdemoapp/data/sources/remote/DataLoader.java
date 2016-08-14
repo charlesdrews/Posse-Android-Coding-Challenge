@@ -1,4 +1,6 @@
-package com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces;
+package com.charlesdrews.charlesdrewsdemoapp.data.sources.remote;
+
+import com.charlesdrews.charlesdrewsdemoapp.data.sources.DataManager;
 
 /**
  * Data loader utility which gathers data (from local file, network call, etc.)

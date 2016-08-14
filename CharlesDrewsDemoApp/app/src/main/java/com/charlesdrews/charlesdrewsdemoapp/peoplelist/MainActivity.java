@@ -1,4 +1,4 @@
-package com.charlesdrews.charlesdrewsdemoapp.personlist.views;
+package com.charlesdrews.charlesdrewsdemoapp.peoplelist;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

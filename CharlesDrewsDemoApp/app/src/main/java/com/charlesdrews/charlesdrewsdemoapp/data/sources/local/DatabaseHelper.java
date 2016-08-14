@@ -1,4 +1,4 @@
-package com.charlesdrews.charlesdrewsdemoapp.personlist.data;
+package com.charlesdrews.charlesdrewsdemoapp.data.sources.local;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.DataManager;
-import com.charlesdrews.charlesdrewsdemoapp.persondetail.interfaces.PersonFullDetail;
-import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.PersonMinDetail;
-import com.charlesdrews.charlesdrewsdemoapp.persondetail.models.PersonFullDetailImpl;
-import com.charlesdrews.charlesdrewsdemoapp.personlist.models.PersonMinDetailImpl;
+import com.charlesdrews.charlesdrewsdemoapp.data.models.PersonFullDetail;
+import com.charlesdrews.charlesdrewsdemoapp.data.models.PersonMinDetail;
+import com.charlesdrews.charlesdrewsdemoapp.data.models.PersonFullDetailImpl;
+import com.charlesdrews.charlesdrewsdemoapp.data.models.PersonMinDetailImpl;
+import com.charlesdrews.charlesdrewsdemoapp.data.sources.DataManager;
 
 import java.util.ArrayList;
 import java.util.List;

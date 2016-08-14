@@ -1,4 +1,4 @@
-package com.charlesdrews.charlesdrewsdemoapp.personlist.data;
+package com.charlesdrews.charlesdrewsdemoapp.data.sources.local;
 
 import android.provider.BaseColumns;
 

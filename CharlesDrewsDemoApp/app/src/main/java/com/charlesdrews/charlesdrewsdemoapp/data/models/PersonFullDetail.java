@@ -1,6 +1,4 @@
-package com.charlesdrews.charlesdrewsdemoapp.persondetail.interfaces;
-
-import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.PersonMinDetail;
+package com.charlesdrews.charlesdrewsdemoapp.data.models;
 
 /**
  * Full detail needed for person detail feature

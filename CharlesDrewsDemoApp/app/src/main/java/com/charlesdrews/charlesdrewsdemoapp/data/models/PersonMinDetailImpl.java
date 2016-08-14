@@ -1,6 +1,4 @@
-package com.charlesdrews.charlesdrewsdemoapp.personlist.models;
-
-import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.PersonMinDetail;
+package com.charlesdrews.charlesdrewsdemoapp.data.models;
 
 /**
  * Created by charlie on 8/13/16.

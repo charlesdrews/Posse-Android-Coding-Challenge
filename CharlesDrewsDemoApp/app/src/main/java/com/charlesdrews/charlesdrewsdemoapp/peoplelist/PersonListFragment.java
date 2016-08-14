@@ -1,4 +1,4 @@
-package com.charlesdrews.charlesdrewsdemoapp.personlist.views;
+package com.charlesdrews.charlesdrewsdemoapp.peoplelist;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

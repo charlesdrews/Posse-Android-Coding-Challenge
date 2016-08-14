@@ -1,10 +1,10 @@
-package com.charlesdrews.charlesdrewsdemoapp.personlist.presenters;
+package com.charlesdrews.charlesdrewsdemoapp.peoplelist;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces.DataBinder;
-import com.charlesdrews.charlesdrewsdemoapp.persondetail.interfaces.PersonFullDetail;
+import com.charlesdrews.charlesdrewsdemoapp.peoplelist.DataBinder;
+import com.charlesdrews.charlesdrewsdemoapp.data.models.PersonFullDetail;
 
 /**
  * Created by charlie on 8/13/16.

@@ -1,4 +1,4 @@
-package com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces;
+package com.charlesdrews.charlesdrewsdemoapp.data.models;
 
 /**
  * Minimum detail needed for person list feature

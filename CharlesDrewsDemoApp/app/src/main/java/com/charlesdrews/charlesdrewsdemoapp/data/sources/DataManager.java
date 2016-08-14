@@ -1,6 +1,7 @@
-package com.charlesdrews.charlesdrewsdemoapp.personlist.interfaces;
+package com.charlesdrews.charlesdrewsdemoapp.data.sources;
 
-import com.charlesdrews.charlesdrewsdemoapp.persondetail.interfaces.PersonFullDetail;
+import com.charlesdrews.charlesdrewsdemoapp.data.models.PersonFullDetail;
+import com.charlesdrews.charlesdrewsdemoapp.data.models.PersonMinDetail;
 
 import java.util.List;
 
