@@ -5,43 +5,44 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.charlesdrews.charlesdrewsdemoapp.R;
-import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.Injection;
-import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleDataSource;
-import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleRepository;
 
-import java.util.List;
+public class PeopleListActivity extends AppCompatActivity
+        implements PeopleListFragment.OnPersonSelectedListener {
 
-public class PeopleListActivity extends AppCompatActivity {
     private static final String TAG = "PeopleListActivity";
+
+    private boolean mTabletLandscapeMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_people_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        PeopleRepository repository = Injection.getTaskRepository(getApplicationContext());
-        repository.getPeople(new PeopleDataSource.GetPeopleCallback() {
-            @Override
-            public void onPeopleLoaded(List<Person> people) {
-                for (Person person : people) {
-                    Log.d(TAG, "onPeopleLoaded: " + person.getFirstName());
-                }
-            }
+        // Set up people list fragment
+        PeopleListFragment listFragment = (PeopleListFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.people_list_fragment);
 
-            @Override
-            public void onDataNotAvailable() {
-                Log.d(TAG, "onDataNotAvailable: no people");
-            }
-        });
+        listFragment.setPresenter(new PeopleListPresenter(listFragment,
+                Injection.getTaskRepository(getApplicationContext())));
+
+        // Set up people detail fragment (if present)
+        FrameLayout detailFragmentContainer = (FrameLayout)
+                findViewById(R.id.detail_fragment_container);
+        mTabletLandscapeMode = (detailFragmentContainer != null);
+
+        if (mTabletLandscapeMode) {
+            //TODO - plug detail fragment into container
+        }
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -73,5 +74,10 @@ public class PeopleListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPersonSelected(long personId) {
+        //TODO - launch DetailActivity or communicate with detail fragment
     }
 }

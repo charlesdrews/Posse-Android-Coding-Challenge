@@ -2,6 +2,7 @@ package com.charlesdrews.charlesdrewsdemoapp.data.sources.remote;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.charlesdrews.charlesdrewsdemoapp.R;
@@ -48,8 +49,13 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
         return sInstance;
     }
 
+    /**
+     * Reads json from local file, converts to objects, returns Person objects
+     * @param searchQuery is currently ignored, since this is not making an API call
+     * @param callback
+     */
     @Override
-    public void getPeople(@NonNull GetPeopleCallback callback) {
+    public void getPeople(@Nullable String searchQuery, @NonNull GetPeopleCallback callback) {
         InputStream raw = mContextWeakReference.get().getResources()
                 .openRawResource(R.raw.android_model_challenge);
 
@@ -89,17 +95,6 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
         }
 
         callback.onPeopleLoaded(people);
-    }
-
-    /**
-     * This is just a stub - if the JSON were coming from an API instead of a local file, then
-     * this method would be implemented.
-     * @param query
-     * @param callback
-     */
-    @Override
-    public void searchPeople(@NonNull String query, @NonNull GetPeopleCallback callback) {
-        callback.onDataNotAvailable();
     }
 
     /**

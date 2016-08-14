@@ -1,6 +1,7 @@
 package com.charlesdrews.charlesdrewsdemoapp.data.sources;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
@@ -37,10 +38,10 @@ public class PeopleRepository implements PeopleDataSource {
     }
 
     @Override
-    public void getPeople(@NonNull final GetPeopleCallback callback) {
+    public void getPeople(@Nullable final String searchQuery, @NonNull final GetPeopleCallback callback) {
 
         // Try to get people from local source first
-        mLocalDataSource.getPeople(new GetPeopleCallback() {
+        mLocalDataSource.getPeople(searchQuery, new GetPeopleCallback() {
             @Override
             public void onPeopleLoaded(List<Person> people) {
                 callback.onPeopleLoaded(people);
@@ -49,12 +50,12 @@ public class PeopleRepository implements PeopleDataSource {
             // If people are not available from local source, use remote source
             @Override
             public void onDataNotAvailable() {
-                mRemoteDataSource.getPeople(new GetPeopleCallback() {
+
+                mRemoteDataSource.getPeople(null, new GetPeopleCallback() {
                     @Override
                     public void onPeopleLoaded(final List<Person> people) {
-                        callback.onPeopleLoaded(people);
 
-                        // Also, save people to local source
+                        // Save people to local source
                         for (final Person person : people) {
                             mLocalDataSource.savePerson(person, new SavePersonCallback() {
                                 @Override
@@ -71,6 +72,13 @@ public class PeopleRepository implements PeopleDataSource {
                                 }
                             });
                         }
+
+                        // If need to apply query, use now-populated local data source
+                        if (searchQuery == null) {
+                            callback.onPeopleLoaded(people);
+                        } else {
+                            mLocalDataSource.getPeople(searchQuery, callback);
+                        }
                     }
 
                     @Override
@@ -78,21 +86,6 @@ public class PeopleRepository implements PeopleDataSource {
                         callback.onDataNotAvailable();
                     }
                 });
-            }
-        });
-    }
-
-    @Override
-    public void searchPeople(@NonNull String query, @NonNull final GetPeopleCallback callback) {
-        mLocalDataSource.searchPeople(query, new GetPeopleCallback() {
-            @Override
-            public void onPeopleLoaded(List<Person> people) {
-                callback.onPeopleLoaded(people);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                callback.onDataNotAvailable();
             }
         });
     }

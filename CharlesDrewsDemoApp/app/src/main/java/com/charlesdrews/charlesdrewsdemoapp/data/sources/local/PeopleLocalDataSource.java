@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleDataSource;
@@ -34,36 +35,20 @@ public class PeopleLocalDataSource implements PeopleDataSource {
     }
 
     @Override
-    public void getPeople(@NonNull GetPeopleCallback callback) {
+    public void getPeople(@Nullable String searchQuery, @NonNull GetPeopleCallback callback) {
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
 
-        Cursor cursor = db.query(DatabaseContract.PersonTable.TABLE_NAME,
-                null, null, null, null, null,
-                DatabaseContract.PersonTable.COL_NAME_FIRST_NAME);
+        String selection = null;
+        String[] selectionArgs = null;
 
-        List<Person> people = constructPeopleFromCursor(cursor);
+        if (searchQuery != null) {
+            selection = DatabaseContract.PersonTable.COL_NAME_FIRST_NAME + " LIKE \"%?%\" OR " +
+                    DatabaseContract.PersonTable.COL_NAME_LOCALITY + " LIKE \"%?%\" OR " +
+                    DatabaseContract.PersonTable.COL_NAME_PLATFORM + " LIKE \"%?%\" OR " +
+                    DatabaseContract.PersonTable.COL_NAME_FAV_COLOR + " LIKE \"%?%\"";
 
-        cursor.close();
-        db.close();
-
-        if (people.size() == 0) {
-            callback.onDataNotAvailable();
+            selectionArgs = new String[]{searchQuery, searchQuery, searchQuery, searchQuery};
         }
-
-        callback.onPeopleLoaded(people);
-    }
-
-    @Override
-    public void searchPeople(@NonNull String query, @NonNull GetPeopleCallback callback) {
-        SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
-
-        //TODO - use LIKE instead of = dummy
-        String selection = DatabaseContract.PersonTable.COL_NAME_FIRST_NAME + " = ? OR " +
-                DatabaseContract.PersonTable.COL_NAME_LOCALITY + " = ? OR " +
-                DatabaseContract.PersonTable.COL_NAME_PLATFORM + " = ? OR " +
-                DatabaseContract.PersonTable.COL_NAME_FAV_COLOR + " = ?";
-
-        String[] selectionArgs = {query, query, query, query};
 
         Cursor cursor = db.query(DatabaseContract.PersonTable.TABLE_NAME,
                 null, selection, selectionArgs, null, null,

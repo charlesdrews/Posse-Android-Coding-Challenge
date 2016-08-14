@@ -1,6 +1,7 @@
 package com.charlesdrews.charlesdrewsdemoapp.data.sources;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 
@@ -31,9 +32,7 @@ public interface PeopleDataSource {
         void onDataNotAvailable();
     }
 
-    void getPeople(@NonNull GetPeopleCallback callback);
-
-    void searchPeople(@NonNull String query, @NonNull GetPeopleCallback callback);
+    void getPeople(@Nullable String searchQuery, @NonNull GetPeopleCallback callback);
 
     void getPerson(@NonNull long personId, @NonNull GetPersonDetailCallback callback);
 

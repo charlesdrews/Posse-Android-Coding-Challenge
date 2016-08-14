@@ -8,10 +8,10 @@ import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 /**
  * Created by charlie on 8/13/16.
  */
-public class ProgrammerViewHolder extends RecyclerView.ViewHolder
+public class PersonViewHolder extends RecyclerView.ViewHolder
         implements DataBinder<Person> {
 
-    public ProgrammerViewHolder(View itemView) {
+    public PersonViewHolder(View itemView) {
         super(itemView);
     }
 
