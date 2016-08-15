@@ -4,7 +4,6 @@ import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
-import com.charlesdrews.charlesdrewsdemoapp.data.sources.Injection;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleDataSource;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleRepository;
 
@@ -20,7 +19,7 @@ public class PeopleRepositoryTest extends ApplicationTest {
 
     @VisibleForTesting
     public void TestGetPeople() {
-        PeopleRepository repository = Injection.getTaskRepository(getContext().getApplicationContext());
+        PeopleRepository repository = Injection.getPeopleRepository(getContext().getApplicationContext());
 
         mPeople.clear();
 

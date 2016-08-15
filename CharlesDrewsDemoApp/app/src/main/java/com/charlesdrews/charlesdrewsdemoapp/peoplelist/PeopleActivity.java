@@ -11,36 +11,41 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.charlesdrews.charlesdrewsdemoapp.R;
-import com.charlesdrews.charlesdrewsdemoapp.data.sources.Injection;
+import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.OnPersonSelectedListener;
+import com.charlesdrews.charlesdrewsdemoapp.persondetail.PersonDetailFragment;
 
-public class PeopleListActivity extends AppCompatActivity
-        implements PeopleListFragment.OnPersonSelectedListener {
+public class PeopleActivity extends AppCompatActivity
+        implements OnPersonSelectedListener {
 
-    private static final String TAG = "PeopleListActivity";
+    private static final String TAG = "PeopleActivity";
 
     private boolean mTabletLandscapeMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_people_list);
+        setContentView(R.layout.people_list_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Set up people list fragment
-        PeopleListFragment listFragment = (PeopleListFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.people_list_fragment);
+        PeopleFragment peopleFragment = new PeopleFragment();
+        peopleFragment.setOnPersonSelectedListener(this);
 
-        listFragment.setPresenter(new PeopleListPresenter(listFragment,
-                Injection.getTaskRepository(getApplicationContext())));
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.people_fragment_container, peopleFragment)
+                .commit();
 
-        // Set up people detail fragment (if present)
+        // Set up people detail fragment (if container present)
         FrameLayout detailFragmentContainer = (FrameLayout)
-                findViewById(R.id.detail_fragment_container);
+                findViewById(R.id.person_detail_fragment_container);
+
         mTabletLandscapeMode = (detailFragmentContainer != null);
 
         if (mTabletLandscapeMode) {
-            //TODO - plug detail fragment into container
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.person_detail_fragment_container, new PersonDetailFragment())
+                    .commit();
         }
 
 

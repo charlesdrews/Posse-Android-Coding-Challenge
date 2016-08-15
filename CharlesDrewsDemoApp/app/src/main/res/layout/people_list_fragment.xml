@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".peoplelist.PeopleListFragment"
-    tools:showIn="@layout/activity_people_list">
+    tools:context=".peoplelist.PeopleFragment"
+    tools:showIn="@layout/people_list_activity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/people_list_recycler_view"

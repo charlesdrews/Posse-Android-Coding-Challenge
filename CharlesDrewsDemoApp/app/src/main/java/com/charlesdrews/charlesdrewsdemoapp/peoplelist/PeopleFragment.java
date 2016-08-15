@@ -1,6 +1,7 @@
 package com.charlesdrews.charlesdrewsdemoapp.peoplelist;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,8 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.charlesdrews.charlesdrewsdemoapp.PresenterCache;
 import com.charlesdrews.charlesdrewsdemoapp.R;
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
+import com.charlesdrews.charlesdrewsdemoapp.Injection;
+import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.OnPersonSelectedListener;
+import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.PeopleContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,26 +25,36 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PeopleListFragment extends Fragment
-        implements PeopleListContract.View<PeopleListContract.Presenter> {
+public class PeopleFragment extends Fragment implements PeopleContract.View {
+    private static final String TAG = "PeopleFragment";
 
-    private PeopleListContract.Presenter mPresenter;
+    private PeopleContract.Presenter mPresenter;
     private OnPersonSelectedListener mOnPersonSelectedListener;
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private PeopleRecyclerViewAdapter mAdapter;
     private List<Person> mPeople;
 
-    public interface OnPersonSelectedListener {
-        void onPersonSelected(long personId);
-    }
+    public PeopleFragment() {}
 
-    public PeopleListFragment() {}
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mPresenter = PresenterCache.getInstance().getPresenter(TAG,
+                new PresenterCache.PresenterFactory<PeopleContract.Presenter>() {
+                    @Override
+                    public PeopleContract.Presenter createPresenter() {
+                        return new PeoplePresenter(Injection.getPeopleRepository(
+                                getContext().getApplicationContext()));
+                    }
+                });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_people_list, container, false);
+        View view = inflater.inflate(R.layout.people_list_fragment, container, false);
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.people_list_progress_bar);
 
@@ -58,8 +73,20 @@ public class PeopleListFragment extends Fragment
     }
 
     @Override
-    public void setPresenter(PeopleListContract.Presenter presenter) {
-        mPresenter = presenter;
+    public void onResume() {
+        super.onResume();
+        mPresenter.bindView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mPresenter.unbindView();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -68,7 +95,7 @@ public class PeopleListFragment extends Fragment
     }
 
     @Override
-    public void showPeople(List<Person> people) {
+    public void showPeople(@NonNull List<Person> people) {
         mPeople.clear();
         mPeople.addAll(people);
         mAdapter.notifyDataSetChanged();
