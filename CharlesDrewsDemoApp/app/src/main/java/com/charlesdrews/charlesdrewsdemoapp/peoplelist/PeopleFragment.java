@@ -36,6 +36,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
     private OnPersonSelectedListener mOnPersonSelectedListener;
     private ProgressBar mProgressBar;
     private TextView mDataNotAvailable;
+    private ViewGroup mDataContainer;
     private RecyclerView mRecyclerView;
     private PeopleRecyclerViewAdapter mAdapter;
     private List<Person> mPeople;
@@ -73,6 +74,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.people_list_progress_bar);
         mDataNotAvailable = (TextView) view.findViewById(R.id.people_list_data_not_available);
+        mDataContainer = (ViewGroup) view.findViewById(R.id.people_list_data_container);
 
         // Set up RecyclerView
         mRecyclerView = (RecyclerView) view.findViewById(R.id.people_list_recycler_view);
@@ -113,7 +115,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
 
     @Override
     public void showPeople(@NonNull List<Person> people) {
-        mRecyclerView.setVisibility(View.VISIBLE);
+        mDataContainer.setVisibility(View.VISIBLE);
         mPeople.clear();
         mPeople.addAll(people);
         mAdapter.notifyDataSetChanged();
@@ -125,7 +127,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
     @Override
     public void showDataNotAvailableIndicator() {
         mProgressBar.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.GONE);
+        mDataContainer.setVisibility(View.GONE);
         mDataNotAvailable.setVisibility(View.VISIBLE);
     }
 

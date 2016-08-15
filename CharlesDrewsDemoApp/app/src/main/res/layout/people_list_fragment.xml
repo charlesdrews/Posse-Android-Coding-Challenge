@@ -5,14 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".peoplelist.PeopleFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/people_list_recycler_view"
+    <LinearLayout
+        android:id="@+id/people_list_data_container"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/people_list_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/people_list_progress_bar"
         android:layout_gravity="center"
+        style="@android:style/Widget.ProgressBar.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
