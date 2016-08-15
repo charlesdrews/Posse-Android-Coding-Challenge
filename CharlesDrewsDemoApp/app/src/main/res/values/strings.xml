@@ -7,6 +7,8 @@
     <string name="data_not_available">Sorry, this data is not available</string>
     <string name="no_search_results">This search returned no results</string>
 
+    <string name="person_list_item_description">%1$s | %2$s</string>
+
     <string name="filter_label">Filters:</string>
     <string name="platform_filter_title">Select a platform to filter</string>
     <string name="platform_filter_initial_value">All platforms</string>

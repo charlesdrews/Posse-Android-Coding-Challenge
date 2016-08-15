@@ -6,6 +6,9 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
-    <dimen name="people_list_item_image_size">60dp</dimen>
+    <dimen name="people_list_item_image_size">110dp</dimen>
+    <dimen name="people_list_item_name_size">24sp</dimen>
+    <dimen name="people_list_item_description_size">18sp</dimen>
+
     <dimen name="filter_spinner_left_margin">15dp</dimen>
 </resources>

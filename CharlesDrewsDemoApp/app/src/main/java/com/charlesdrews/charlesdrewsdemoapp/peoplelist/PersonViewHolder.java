@@ -21,26 +21,31 @@ public class PersonViewHolder extends RecyclerView.ViewHolder
     private static final String TAG = "PersonViewHolder";
 
     private ImageView mImageView;
-    private TextView mTextView;
+    private TextView mNameView, mDescriptionView;
 
     public PersonViewHolder(View itemView) {
         super(itemView);
 
         mImageView = (ImageView) itemView.findViewById(R.id.people_list_item_image);
-        mTextView = (TextView) itemView.findViewById(R.id.people_list_item_name);
+        mNameView = (TextView) itemView.findViewById(R.id.people_list_item_name);
+        mDescriptionView = (TextView) itemView.findViewById(R.id.people_list_item_description);
     }
 
     @Override
     public void bindData(Person data) {
         //TODO - look into other ways of parsing colors strings into colors
         //TODO - building an exception here might be too slow to keep the UI smooth
+        //TODO - https://developer.android.com/reference/android/graphics/Color.html#parseColor
         try {
             mImageView.setBackgroundColor(Color.parseColor(data.getFavoriteColor()));
         } catch (IllegalArgumentException e) {
-            Log.i(TAG, "bindData: unable to parse color string: " + data.getFavoriteColor());
+            Log.i(TAG, "bindData: unable to parse color string: " +
+                    data.getFavoriteColor().trim().toLowerCase());
             mImageView.setBackgroundColor(Color.BLACK);
         }
 
-        mTextView.setText(data.getFirstName());
+        mNameView.setText(data.getFirstName());
+        mDescriptionView.setText(mDescriptionView.getContext().getString(
+                R.string.person_list_item_description, data.getPlatform(), data.getLocality()));
     }
 }
