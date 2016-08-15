@@ -43,7 +43,6 @@ public class PeopleRecyclerViewAdapter extends RecyclerView.Adapter<PersonViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("RVADAPTER", "onClick: id clicked: " + mPeople.get(holder.getAdapterPosition()).getId());
                 mOnPersonClickedListener.onPersonClicked(
                         mPeople.get(holder.getAdapterPosition()).getId());
             }

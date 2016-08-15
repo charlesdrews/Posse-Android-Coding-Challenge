@@ -218,9 +218,6 @@ public class PeopleLocalDataSource implements PeopleDataSource {
                         .setLocality(cursor.getString(localityIndex))
                         .build();
 
-                Log.d("LOCAL DATA SOURCE", "constructPeopleFromCursor: id " + cursor.getLong(idIndex));
-                Log.d("LOCAL DATA SOURCE", "constructPeopleFromCursor: name " + cursor.getString(firstNameIndex));
-
                 people.add(person);
 
                 cursor.moveToNext();

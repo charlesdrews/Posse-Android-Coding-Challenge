@@ -35,7 +35,7 @@ public class PeopleActivity extends AppCompatActivity implements OnPersonSelecte
         mPeopleFragment.setOnPersonSelectedListener(this);
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.people_fragment_container, mPeopleFragment)
+                .replace(R.id.people_fragment_container, mPeopleFragment)
                 .commit();
 
         // Set up person detail fragment (if container present)
@@ -48,19 +48,9 @@ public class PeopleActivity extends AppCompatActivity implements OnPersonSelecte
             mPersonDetailFragment = PersonDetailFragment.newInstance(null);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.person_detail_fragment_container, mPersonDetailFragment)
+                    .replace(R.id.person_detail_fragment_container, mPersonDetailFragment)
                     .commit();
         }
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override

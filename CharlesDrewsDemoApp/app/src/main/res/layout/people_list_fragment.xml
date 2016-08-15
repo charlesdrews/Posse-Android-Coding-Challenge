@@ -20,7 +20,10 @@
             <TextView
                 android:id="@+id/people_list_filter_label"
                 android:text="@string/filter_label"
-                android:layout_margin="@dimen/text_margin"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:layout_marginTop="@dimen/text_margin"
+                android:layout_marginBottom="@dimen/text_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -28,24 +31,38 @@
                 android:id="@+id/platform_filter_spinner"
                 android:prompt="@string/platform_filter_title"
                 android:spinnerMode="dialog"
-                android:layout_marginLeft="@dimen/filter_spinner_left_margin"
-                android:layout_marginStart="@dimen/filter_spinner_left_margin"
-                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/people_list_filter_search_margin"
+                android:layout_marginStart="@dimen/people_list_filter_search_margin"
+                android:layout_width="0dp"
+                android:layout_weight="0.25"
                 android:layout_height="wrap_content"/>
 
             <Spinner
                 android:id="@+id/location_filter_spinner"
                 android:prompt="@string/location_filter_title"
                 android:spinnerMode="dialog"
-                android:layout_marginLeft="@dimen/filter_spinner_left_margin"
-                android:layout_marginStart="@dimen/filter_spinner_left_margin"
-                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/people_list_filter_search_margin"
+                android:layout_marginStart="@dimen/people_list_filter_search_margin"
+                android:layout_width="0dp"
+                android:layout_weight="0.25"
+                android:layout_height="wrap_content"/>
+
+            <SearchView
+                android:id="@+id/people_search_view"
+                android:iconifiedByDefault="false"
+                android:gravity="end"
+                android:layout_marginLeft="@dimen/people_list_filter_search_margin"
+                android:layout_marginStart="@dimen/people_list_filter_search_margin"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/people_list_recycler_view"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="@dimen/people_list_recycler_view_fading_edge_length"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
