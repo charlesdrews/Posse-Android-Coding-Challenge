@@ -39,6 +39,11 @@
                 android:layout_weight="0.5"
                 android:layout_height="match_parent"/>
 
+            <View
+                android:background="@color/colorPrimaryDark"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"/>
+
             <FrameLayout
                 android:id="@+id/person_detail_fragment_container"
                 android:layout_width="0dp"

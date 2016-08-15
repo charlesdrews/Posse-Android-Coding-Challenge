@@ -16,8 +16,6 @@ import java.lang.ref.WeakReference;
  * Created by charlie on 8/15/16.
  */
 public class PersonDetailPresenter implements PersonDetailContract.Presenter {
-    private static final String TAG = "PersonDetailPresenter";
-
     private WeakReference<PersonDetailContract.View> mPersonViewRef;
     private PeopleRepository mPeopleRepository;
     private Person mLoadedPerson;
@@ -28,46 +26,36 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter {
 
     @Override
     public void bindView(@NonNull PersonDetailContract.View view) {
-        Log.d(TAG, "bindView: binding...");
-
         mPersonViewRef = new WeakReference<>(view);
 
         if (mLoadedPerson != null) {
-            Log.d(TAG, "bindView: person already loaded");
             showLoadedPerson();
         } else {
-            Log.d(TAG, "bindView: no person loaded yet; please select a person");
             mPersonViewRef.get().showSelectAPersonMessage();
         }
     }
 
     @Override
     public void unbindView() {
-        Log.d(TAG, "unbindView: unbinding...");
         mPersonViewRef.clear();
     }
 
     @Override
     public void loadPerson(long personId) {
-        Log.d(TAG, "loadPerson: starting to load person");
-        
+
         if (viewIsActive()) {
-            Log.d(TAG, "loadPerson: show progress bar");
             mPersonViewRef.get().showLoadingIndicator(true);
         }
 
         if (mLoadedPerson != null && mLoadedPerson.getId() == personId && viewIsActive()) {
-            Log.d(TAG, "loadPerson: person all set to go");
             showLoadedPerson();
         } else {
-            Log.d(TAG, "loadPerson: launching async task to load person");
             new LoadPersonAsyncTask().execute(personId);
         }
 
     }
 
     private void showLoadedPerson() {
-        Log.d(TAG, "showLoadedPerson: ");
         mPersonViewRef.get().showLoadingIndicator(false);
 
         mPersonViewRef.get().showName(mLoadedPerson.getFirstName());
@@ -96,18 +84,15 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter {
 
         @Override
         protected Void doInBackground(Long... longs) {
-            Log.d(TAG, "doInBackground: loading person from repository in background, with id " + longs[0]);
             mLoadedPerson = null;
             mPeopleRepository.getPerson(longs[0], new PeopleDataSource.GetPersonDetailCallback() {
                 @Override
                 public void onPersonLoaded(Person person) {
-                    Log.d(TAG, "onPersonLoaded: repository returned person: " + person.getFirstName());
                     mLoadedPerson = person;
                 }
 
                 @Override
                 public void onDataNotAvailable() {
-                    Log.d(TAG, "onDataNotAvailable: repository unable to return person");
                 }
             });
             return null;
@@ -117,13 +102,10 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            Log.d(TAG, "onPostExecute: done loading person");
             if (viewIsActive()) {
                 if (mLoadedPerson != null) {
-                    Log.d(TAG, "onPostExecute: person set, show person");
                     showLoadedPerson();
                 } else {
-                    Log.d(TAG, "onPostExecute: failed to load person");
                     mPersonViewRef.get().showDataNotAvailableMessage();
                 }
             }

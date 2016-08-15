@@ -17,10 +17,7 @@ import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.OnPersonSelect
 import com.charlesdrews.charlesdrewsdemoapp.persondetail.PersonDetailActivity;
 import com.charlesdrews.charlesdrewsdemoapp.persondetail.PersonDetailFragment;
 
-public class PeopleActivity extends AppCompatActivity
-        implements OnPersonSelectedListener {
-
-    private static final String TAG = "PeopleActivity";
+public class PeopleActivity extends AppCompatActivity implements OnPersonSelectedListener {
 
     private boolean mTabletLandscapeMode = false;
     private PeopleFragment mPeopleFragment;
@@ -90,12 +87,9 @@ public class PeopleActivity extends AppCompatActivity
 
     @Override
     public void onPersonSelected(long personId) {
-        Log.d(TAG, "onPersonSelected: activity is launching the detail UI for person id " + personId);
         if (mTabletLandscapeMode) {
-            Log.d(TAG, "onPersonSelected: table configuration - personId is " + personId);
             mPersonDetailFragment.loadPerson(personId);
         } else {
-            Log.d(TAG, "onPersonSelected: phone configuration - personId is " + personId);
             Intent intent = new Intent(PeopleActivity.this, PersonDetailActivity.class);
             intent.putExtra(PersonDetailFragment.PERSON_ID_KEY, personId);
             startActivity(intent);

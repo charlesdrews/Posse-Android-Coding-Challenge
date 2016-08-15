@@ -67,7 +67,7 @@ public class PeopleRepository implements PeopleDataSource {
 
                                 @Override
                                 public void onPersonNotSaved() {
-                                    Log.d(TAG, "onPersonNotSaved: error saving" +
+                                    Log.w(TAG, "onPersonNotSaved: error saving" +
                                             person.getFirstName() + " to local data source");
                                 }
                             });
@@ -92,17 +92,14 @@ public class PeopleRepository implements PeopleDataSource {
 
     @Override
     public void getPerson(@NonNull long personId, @NonNull final GetPersonDetailCallback callback) {
-        Log.d(TAG, "getPerson: repository trying to get person from local source w/ id " + personId);
         mLocalDataSource.getPerson(personId, new GetPersonDetailCallback() {
             @Override
             public void onPersonLoaded(Person person) {
-                Log.d(TAG, "onPersonLoaded: got person from local source: " + person.getFirstName());
                 callback.onPersonLoaded(person);
             }
 
             @Override
             public void onDataNotAvailable() {
-                Log.d(TAG, "onDataNotAvailable: person was not available from local source");
                 callback.onDataNotAvailable();
             }
         });

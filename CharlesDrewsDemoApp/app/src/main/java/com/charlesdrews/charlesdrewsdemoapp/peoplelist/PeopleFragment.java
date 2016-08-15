@@ -4,13 +4,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.charlesdrews.charlesdrewsdemoapp.PresenterCache;
@@ -37,9 +39,11 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
     private ProgressBar mProgressBar;
     private TextView mDataNotAvailable;
     private ViewGroup mDataContainer;
-    private RecyclerView mRecyclerView;
     private PeopleRecyclerViewAdapter mAdapter;
     private List<Person> mPeople;
+
+    private List<String> mPlatformNames, mLocationNames;
+    private ArrayAdapter<String> mPlatformSpinnerAdapter, mLocationSpinnerAdapter;
 
     public PeopleFragment() {}
 
@@ -77,15 +81,32 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
         mDataContainer = (ViewGroup) view.findViewById(R.id.people_list_data_container);
 
         // Set up RecyclerView
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.people_list_recycler_view);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.people_list_recycler_view);
 
         //TODO - grid if in landscape but not on tablet
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
 
         mPeople = new ArrayList<>();
         mAdapter = new PeopleRecyclerViewAdapter(mPeople, this);
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
+
+        // Set up filter spinners
+        Spinner platformFilterSpinner = (Spinner) view.findViewById(R.id.platform_filter_spinner);
+        mPlatformNames = new ArrayList<>();
+        mPlatformNames.add(getString(R.string.platform_filter_initial_value));
+        mPlatformSpinnerAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, mPlatformNames);
+        mPlatformSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        platformFilterSpinner.setAdapter(mPlatformSpinnerAdapter);
+
+        Spinner locationFilterSpinner = (Spinner) view.findViewById(R.id.location_filter_spinner);
+        mLocationNames = new ArrayList<>();
+        mLocationNames.add(getString(R.string.location_filter_initial_value));
+        mLocationSpinnerAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, mLocationNames);
+        mLocationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationFilterSpinner.setAdapter(mLocationSpinnerAdapter);
 
         return view;
     }
@@ -133,7 +154,6 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
 
     @Override
     public void launchPersonDetailUi(long personId) {
-        Log.d(TAG, "launchPersonDetailUi: fragment is telling activity to launch detail view for id " + personId);
         if (mOnPersonSelectedListener != null) {
             mOnPersonSelectedListener.onPersonSelected(personId);
         }
@@ -145,7 +165,6 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
 
     @Override
     public void onPersonClicked(long personId) {
-        Log.d(TAG, "onPersonClicked: view is telling presenter that user clicked on person w/ id " + personId);
         mPresenter.handlePersonClicked(personId);
     }
 }

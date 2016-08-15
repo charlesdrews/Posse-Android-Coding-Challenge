@@ -56,7 +56,6 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
                 });
 
         long selectedPersonId = getArguments().getLong(PERSON_ID_KEY, -1);
-        Log.d(TAG, "onCreate: selectedPersonId is " + selectedPersonId);
         if (selectedPersonId != -1) {
             mPresenter.loadPerson(selectedPersonId);
         }
@@ -155,7 +154,6 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
     }
 
     public void loadPerson(long personId) {
-        Log.d(TAG, "loadPerson: personId is " + personId);
         mPresenter.loadPerson(personId);
     }
 }

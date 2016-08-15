@@ -20,8 +20,6 @@ import java.util.List;
  * Created by charlie on 8/14/16.
  */
 public class PeoplePresenter implements PeopleContract.Presenter {
-    private static final String TAG = "PeoplePresenter";
-
     private WeakReference<PeopleContract.View> mPeopleViewRef;
     private PeopleRepository mPeopleRepository;
     private List<Person> mLoadedPeople;
@@ -62,7 +60,6 @@ public class PeoplePresenter implements PeopleContract.Presenter {
 
     @Override
     public void handlePersonClicked(long personId) {
-        Log.d(TAG, "handlePersonClicked: presenter is telling view to launch detail UI for id " + personId);
         if (viewIsActive()) {
             mPeopleViewRef.get().launchPersonDetailUi(personId);
         }

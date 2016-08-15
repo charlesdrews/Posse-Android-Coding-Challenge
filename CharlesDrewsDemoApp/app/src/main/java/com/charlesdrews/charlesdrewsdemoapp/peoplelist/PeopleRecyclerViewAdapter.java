@@ -19,8 +19,6 @@ import java.util.List;
  * Created by charlie on 8/13/16.
  */
 public class PeopleRecyclerViewAdapter extends RecyclerView.Adapter<PersonViewHolder> {
-    private static final String TAG = "PeopleRvAdapter";
-    
     private List<Person> mPeople;
     private OnPersonClickedListener mOnPersonClickedListener;
 
@@ -41,15 +39,12 @@ public class PeopleRecyclerViewAdapter extends RecyclerView.Adapter<PersonViewHo
     @Override
     public void onBindViewHolder(final PersonViewHolder holder, int position) {
         holder.bindData(mPeople.get(position));
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: position clicked: " + holder.getAdapterPosition());
-                Person person = mPeople.get(holder.getAdapterPosition());
-                Log.d(TAG, "onClick: person name: " + person.getFirstName());
-                Log.d(TAG, "onClick: person id: " + person.getId());
-                Log.d(TAG, "onClick: ViewHolder is telling fragment it got clicked & it's person's id is " + mPeople.get(holder.getAdapterPosition()).getId());
-                mOnPersonClickedListener.onPersonClicked(mPeople.get(holder.getAdapterPosition()).getId());
+                mOnPersonClickedListener.onPersonClicked(
+                        mPeople.get(holder.getAdapterPosition()).getId());
             }
         });
     }

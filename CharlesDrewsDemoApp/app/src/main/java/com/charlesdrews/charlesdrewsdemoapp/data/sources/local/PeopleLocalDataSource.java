@@ -20,8 +20,6 @@ import java.util.List;
  * Created by charlie on 8/14/16.
  */
 public class PeopleLocalDataSource implements PeopleDataSource {
-    private static final String TAG = "PeopleLocalDataSource";
-
     private static PeopleLocalDataSource sInstance;
 
     private DatabaseHelper mDatabaseHelper;
@@ -71,19 +69,7 @@ public class PeopleLocalDataSource implements PeopleDataSource {
 
     @Override
     public void getPerson(@NonNull long personId, @NonNull GetPersonDetailCallback callback) {
-        Log.d(TAG, "getPerson: querying for person w/ id " + personId);
-
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
-
-        Cursor logCursor = db.query(true, DatabaseContract.PersonTable.TABLE_NAME,
-                new String[]{DatabaseContract.PersonTable._ID}, null, null, null, null, null, null);
-        Log.d(TAG, "getPerson: ids present in db:");
-        if (logCursor.moveToFirst()) {
-            while (!logCursor.isAfterLast()) {
-                Log.d(TAG, "getPerson: " + logCursor.getLong(logCursor.getColumnIndex(DatabaseContract.PersonTable._ID)));
-                logCursor.moveToNext();
-            }
-        }
 
         String selection = DatabaseContract.PersonTable._ID + " = ?";
         String[] selectionArgs = {String.valueOf(personId)};
