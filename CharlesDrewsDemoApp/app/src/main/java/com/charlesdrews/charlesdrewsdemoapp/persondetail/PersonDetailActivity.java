@@ -18,6 +18,21 @@ public class PersonDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Set up fragment
+        PersonDetailFragment personDetailFragment;
+
+        long selectedPersonId = getIntent().getLongExtra(PersonDetailFragment.PERSON_ID_KEY, -1);
+        if (selectedPersonId == -1) {
+            personDetailFragment = PersonDetailFragment.newInstance(null);
+        } else {
+            personDetailFragment = PersonDetailFragment.newInstance(selectedPersonId);
+        }
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.person_detail_fragment_container, personDetailFragment)
+                .commit();
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

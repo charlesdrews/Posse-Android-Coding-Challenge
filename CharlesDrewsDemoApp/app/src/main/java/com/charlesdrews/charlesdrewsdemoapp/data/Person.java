@@ -10,14 +10,15 @@ import com.charlesdrews.charlesdrewsdemoapp.data.sources.remote.json.Service;
  * Created by charlie on 8/13/16.
  */
 public class Person {
-    private final int mId, mAge;
+    private final long mId;
+    private final int mAge;
     private final String mFirstName, mFavColor, mPhoneNum, mPlatform, mLocationPublicId;
     private final String mLocality, mRegion, mPostalCode, mCountry;
     private final double mWeight;
     private final boolean mIsArtist;
 
     public Person(
-            final int id, final int age, final String locationPublicId, final String firstName,
+            final long id, final int age, final String locationPublicId, final String firstName,
             final String favColor, final String phoneNum, final String platform,
             final String locality, final String region, final String postalCode,
             final String country, final double weight, final boolean isArtist) {
@@ -36,7 +37,7 @@ public class Person {
         mIsArtist = isArtist;
     }
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
@@ -89,7 +90,8 @@ public class Person {
     }
 
     public static class Builder {
-        private int mId, mAge;
+        private long mId;
+        private int mAge;
         private String mFirstName, mFavColor, mPhoneNum, mPlatform, mLocationPublicId;
         private String mLocality, mRegion, mPostalCode, mCountry;
         private double mWeight;
@@ -134,7 +136,7 @@ public class Person {
             return this;
         }
 
-        public Builder setId(int id) {
+        public Builder setId(long id) {
             mId = id;
             return this;
         }

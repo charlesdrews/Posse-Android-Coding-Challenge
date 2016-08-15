@@ -1,10 +1,12 @@
 package com.charlesdrews.charlesdrewsdemoapp.peoplelist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +14,7 @@ import android.widget.FrameLayout;
 
 import com.charlesdrews.charlesdrewsdemoapp.R;
 import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.OnPersonSelectedListener;
+import com.charlesdrews.charlesdrewsdemoapp.persondetail.PersonDetailActivity;
 import com.charlesdrews.charlesdrewsdemoapp.persondetail.PersonDetailFragment;
 
 public class PeopleActivity extends AppCompatActivity
@@ -20,6 +23,8 @@ public class PeopleActivity extends AppCompatActivity
     private static final String TAG = "PeopleActivity";
 
     private boolean mTabletLandscapeMode = false;
+    private PeopleFragment mPeopleFragment;
+    private PersonDetailFragment mPersonDetailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,22 +34,24 @@ public class PeopleActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // Set up people list fragment
-        PeopleFragment peopleFragment = new PeopleFragment();
-        peopleFragment.setOnPersonSelectedListener(this);
+        mPeopleFragment = PeopleFragment.newInstance(null);
+        mPeopleFragment.setOnPersonSelectedListener(this);
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.people_fragment_container, peopleFragment)
+                .add(R.id.people_fragment_container, mPeopleFragment)
                 .commit();
 
-        // Set up people detail fragment (if container present)
+        // Set up person detail fragment (if container present)
         FrameLayout detailFragmentContainer = (FrameLayout)
                 findViewById(R.id.person_detail_fragment_container);
 
         mTabletLandscapeMode = (detailFragmentContainer != null);
 
         if (mTabletLandscapeMode) {
+            mPersonDetailFragment = PersonDetailFragment.newInstance(null);
+
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.person_detail_fragment_container, new PersonDetailFragment())
+                    .add(R.id.person_detail_fragment_container, mPersonDetailFragment)
                     .commit();
         }
 
@@ -83,6 +90,15 @@ public class PeopleActivity extends AppCompatActivity
 
     @Override
     public void onPersonSelected(long personId) {
-        //TODO - launch DetailActivity or communicate with detail fragment
+        Log.d(TAG, "onPersonSelected: activity is launching the detail UI for person id " + personId);
+        if (mTabletLandscapeMode) {
+            Log.d(TAG, "onPersonSelected: table configuration - personId is " + personId);
+            mPersonDetailFragment.loadPerson(personId);
+        } else {
+            Log.d(TAG, "onPersonSelected: phone configuration - personId is " + personId);
+            Intent intent = new Intent(PeopleActivity.this, PersonDetailActivity.class);
+            intent.putExtra(PersonDetailFragment.PERSON_ID_KEY, personId);
+            startActivity(intent);
+        }
     }
 }

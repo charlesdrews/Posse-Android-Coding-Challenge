@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleDataSource;
@@ -19,6 +20,8 @@ import java.util.List;
  * Created by charlie on 8/14/16.
  */
 public class PeopleLocalDataSource implements PeopleDataSource {
+    private static final String TAG = "PeopleLocalDataSource";
+
     private static PeopleLocalDataSource sInstance;
 
     private DatabaseHelper mDatabaseHelper;
@@ -61,14 +64,26 @@ public class PeopleLocalDataSource implements PeopleDataSource {
 
         if (people.size() == 0) {
             callback.onDataNotAvailable();
+        } else {
+            callback.onPeopleLoaded(people);
         }
-
-        callback.onPeopleLoaded(people);
     }
 
     @Override
     public void getPerson(@NonNull long personId, @NonNull GetPersonDetailCallback callback) {
+        Log.d(TAG, "getPerson: querying for person w/ id " + personId);
+
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
+
+        Cursor logCursor = db.query(true, DatabaseContract.PersonTable.TABLE_NAME,
+                new String[]{DatabaseContract.PersonTable._ID}, null, null, null, null, null, null);
+        Log.d(TAG, "getPerson: ids present in db:");
+        if (logCursor.moveToFirst()) {
+            while (!logCursor.isAfterLast()) {
+                Log.d(TAG, "getPerson: " + logCursor.getLong(logCursor.getColumnIndex(DatabaseContract.PersonTable._ID)));
+                logCursor.moveToNext();
+            }
+        }
 
         String selection = DatabaseContract.PersonTable._ID + " = ?";
         String[] selectionArgs = {String.valueOf(personId)};
@@ -81,6 +96,7 @@ public class PeopleLocalDataSource implements PeopleDataSource {
         if (cursor.moveToFirst()) {
 
             person = new Person.Builder()
+                    .setId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.PersonTable._ID)))
                     .setFirstName(cursor.getString(cursor.getColumnIndex(
                             DatabaseContract.PersonTable.COL_NAME_FIRST_NAME)))
                     .setFavColor(cursor.getString(cursor.getColumnIndex(
@@ -113,9 +129,9 @@ public class PeopleLocalDataSource implements PeopleDataSource {
 
         if (person == null) {
             callback.onDataNotAvailable();
+        } else {
+            callback.onPersonLoaded(person);
         }
-
-        callback.onPersonLoaded(person);
     }
 
     @Override
@@ -143,9 +159,9 @@ public class PeopleLocalDataSource implements PeopleDataSource {
 
         if (personId == -1) {
             callback.onPersonNotSaved();
+        } else {
+            callback.onPersonSaved(personId);
         }
-
-        callback.onPersonSaved(personId);
     }
 
     @Override
@@ -192,15 +208,16 @@ public class PeopleLocalDataSource implements PeopleDataSource {
 
         if (locationNames.size() == 0 && platformNames.size() == 0) {
             callback.onDataNotAvailable();
+        } else {
+            callback.onLocationAndServiceValuesLoaded(locationNames, platformNames);
         }
-
-        callback.onLocationAndServiceValuesLoaded(locationNames, platformNames);
     }
 
     private List<Person> constructPeopleFromCursor(Cursor cursor) {
         List<Person> people = new ArrayList<>(cursor.getCount());
 
         if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(DatabaseContract.PersonTable._ID);
             int firstNameIndex = cursor.getColumnIndex(DatabaseContract.PersonTable.COL_NAME_FIRST_NAME);
             int favColorIndex = cursor.getColumnIndex(DatabaseContract.PersonTable.COL_NAME_FAV_COLOR);
             int platformIndex = cursor.getColumnIndex(DatabaseContract.PersonTable.COL_NAME_PLATFORM);
@@ -208,6 +225,7 @@ public class PeopleLocalDataSource implements PeopleDataSource {
 
             while (!cursor.isAfterLast()) {
                 Person person = new Person.Builder()
+                        .setId(cursor.getLong(idIndex))
                         .setFirstName(cursor.getString(firstNameIndex))
                         .setFavColor(cursor.getString(favColorIndex))
                         .setPlatform(cursor.getString(platformIndex))

@@ -3,6 +3,7 @@ package com.charlesdrews.charlesdrewsdemoapp.peoplelist;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleDataSource;
@@ -14,11 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Handles business logic and coordinates with people repository
+ * Handles business logic for People List and coordinates with the people repository
  *
  * Created by charlie on 8/14/16.
  */
 public class PeoplePresenter implements PeopleContract.Presenter {
+    private static final String TAG = "PeoplePresenter";
 
     private WeakReference<PeopleContract.View> mPeopleViewRef;
     private PeopleRepository mPeopleRepository;
@@ -33,7 +35,6 @@ public class PeoplePresenter implements PeopleContract.Presenter {
     public void bindView(@NonNull PeopleContract.View view) {
         mPeopleViewRef = new WeakReference<>(view);
 
-        mPeopleViewRef.get().showLoadingIndicator(true);
         loadPeople(null);
     }
 
@@ -44,10 +45,16 @@ public class PeoplePresenter implements PeopleContract.Presenter {
 
     @Override
     public void loadPeople(@Nullable String searchQuery) {
+        if (viewIsActive()) {
+            mPeopleViewRef.get().showLoadingIndicator(true);
+        }
+
         if (mLoadedPeople != null && mLoadedPeople.size() > 0
                 && searchQuery == null && viewIsActive()) {
+
             mPeopleViewRef.get().showLoadingIndicator(false);
             mPeopleViewRef.get().showPeople(mLoadedPeople);
+
         } else {
             new LoadPeopleAsyncTask().execute(searchQuery);
         }
@@ -55,13 +62,14 @@ public class PeoplePresenter implements PeopleContract.Presenter {
 
     @Override
     public void handlePersonClicked(long personId) {
+        Log.d(TAG, "handlePersonClicked: presenter is telling view to launch detail UI for id " + personId);
         if (viewIsActive()) {
             mPeopleViewRef.get().launchPersonDetailUi(personId);
         }
     }
 
     private boolean viewIsActive() {
-        return mPeopleViewRef.get() != null;
+        return mPeopleViewRef != null && mPeopleViewRef.get() != null;
     }
 
     private class LoadPeopleAsyncTask extends AsyncTask<String, Void, Void> {
