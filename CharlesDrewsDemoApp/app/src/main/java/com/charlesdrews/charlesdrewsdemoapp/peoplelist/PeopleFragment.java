@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatSpinner;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,7 +40,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
     private ProgressBar mProgressBar;
     private TextView mDataNotAvailable;
     private ViewGroup mDataContainer;
-    private PeopleRecyclerViewAdapter mAdapter;
+    private PeopleRvAdapter mAdapter;
     private List<Person> mPeople;
 
     private List<String> mPlatformNames, mLocationNames;
@@ -88,8 +88,14 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
 
+        RecyclerView.ItemDecoration itemDecoration = new PeopleRvItemDecoration(
+                ContextCompat.getDrawable(getContext(), R.drawable.horizontal_divider),
+                getResources().getDimension(R.dimen.horizontal_divider_margin));
+        recyclerView.addItemDecoration(itemDecoration);
+
+
         mPeople = new ArrayList<>();
-        mAdapter = new PeopleRecyclerViewAdapter(mPeople, this);
+        mAdapter = new PeopleRvAdapter(mPeople, this);
         recyclerView.setAdapter(mAdapter);
 
         // Set up filter spinners

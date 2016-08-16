@@ -6,13 +6,20 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
+    <dimen name="horizontal_divider_height">1dp</dimen>
+    <dimen name="horizontal_divider_margin">8dp</dimen>
     <dimen name="vertical_divider_width">1dp</dimen>
 
+    <dimen name="people_list_item_elevation">0dp</dimen>
+    <dimen name="people_list_item_corner_radius">0dp</dimen>
     <dimen name="people_list_item_image_size">110dp</dimen>
+    <dimen name="people_list_item_image_left_margin">16dp</dimen>
     <dimen name="people_list_item_name_size">24sp</dimen>
     <dimen name="people_list_item_description_size">18sp</dimen>
     <dimen name="people_list_recycler_view_fading_edge_length">8dp</dimen>
     <dimen name="people_list_filter_search_margin">8dp</dimen>
+
+    <dimen name="sub_menu_bar_elevation">2dp</dimen>
 
     <dimen name="person_detail_large_text_size">24sp</dimen>
     <dimen name="person_detail_small_text_size">18sp</dimen>

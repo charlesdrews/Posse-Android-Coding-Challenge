@@ -18,12 +18,12 @@ import java.util.List;
  *
  * Created by charlie on 8/13/16.
  */
-public class PeopleRecyclerViewAdapter extends RecyclerView.Adapter<PersonViewHolder> {
+public class PeopleRvAdapter extends RecyclerView.Adapter<PersonViewHolder> {
     private List<Person> mPeople;
     private OnPersonClickedListener mOnPersonClickedListener;
 
-    public PeopleRecyclerViewAdapter(@NonNull List<Person> people,
-                                     @NonNull OnPersonClickedListener listener) {
+    public PeopleRvAdapter(@NonNull List<Person> people,
+                           @NonNull OnPersonClickedListener listener) {
         mPeople = people;
         mOnPersonClickedListener =  listener;
     }
