@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.charlesdrews.charlesdrewsdemoapp.ColorParseUtil;
 import com.charlesdrews.charlesdrewsdemoapp.R;
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.DataBinder;
@@ -33,17 +34,7 @@ public class PersonViewHolder extends RecyclerView.ViewHolder
 
     @Override
     public void bindData(Person data) {
-        //TODO - look into other ways of parsing colors strings into colors
-        //TODO - building an exception here might be too slow to keep the UI smooth
-        //TODO - https://developer.android.com/reference/android/graphics/Color.html#parseColor
-        try {
-            mImageView.setBackgroundColor(Color.parseColor(data.getFavoriteColor()));
-        } catch (IllegalArgumentException e) {
-            Log.i(TAG, "bindData: unable to parse color string: " +
-                    data.getFavoriteColor().trim().toLowerCase());
-            mImageView.setBackgroundColor(Color.BLACK);
-        }
-
+        mImageView.setBackgroundColor(ColorParseUtil.ParseColorByName(data.getFavoriteColor()));
         mNameView.setText(data.getFirstName());
         mDescriptionView.setText(mDescriptionView.getContext().getString(
                 R.string.person_list_item_description, data.getPlatform(), data.getLocality()));

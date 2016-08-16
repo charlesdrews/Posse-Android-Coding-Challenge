@@ -58,6 +58,7 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter {
     private void showLoadedPerson() {
         mPersonViewRef.get().showLoadingIndicator(false);
 
+        mPersonViewRef.get().showFavColor(mLoadedPerson.getFavoriteColor());
         mPersonViewRef.get().showName(mLoadedPerson.getFirstName());
         mPersonViewRef.get().showPlatform(mLoadedPerson.getPlatform());
         mPersonViewRef.get().showLocation(mLoadedPerson.getLocality());

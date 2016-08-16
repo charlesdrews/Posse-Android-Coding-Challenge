@@ -15,6 +15,7 @@ public interface PersonDetailContract {
         void showDataNotAvailableMessage();
         void showSelectAPersonMessage();
 
+        void showFavColor(String favColor);
         void showName(String name);
         void showPlatform(String platform);
         void showLocation(String location);

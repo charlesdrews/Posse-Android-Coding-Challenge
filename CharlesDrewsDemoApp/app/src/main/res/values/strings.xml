@@ -14,4 +14,5 @@
     <string name="platform_filter_initial_value">All platforms</string>
     <string name="location_filter_title">Select a location to filter</string>
     <string name="location_filter_initial_value">All locations</string>
+
 </resources>

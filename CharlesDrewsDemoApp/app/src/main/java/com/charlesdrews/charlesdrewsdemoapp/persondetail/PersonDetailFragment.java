@@ -2,14 +2,19 @@ package com.charlesdrews.charlesdrewsdemoapp.persondetail;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.charlesdrews.charlesdrewsdemoapp.ColorParseUtil;
 import com.charlesdrews.charlesdrewsdemoapp.Injection;
 import com.charlesdrews.charlesdrewsdemoapp.PresenterCache;
 import com.charlesdrews.charlesdrewsdemoapp.R;
@@ -19,9 +24,14 @@ import com.charlesdrews.charlesdrewsdemoapp.R;
  */
 public class PersonDetailFragment extends Fragment implements PersonDetailContract.View {
     private static final String TAG = "PersonDetailFragment";
+    private static final String TWO_PANE_MODE_KEY = "two_pane_mode_key";
     public static final String PERSON_ID_KEY = "person_id_key";
 
+    private boolean mTwoPaneMode;
     private PersonDetailContract.Presenter mPresenter;
+
+    private CollapsingToolbarLayout mToolbarLayout;
+    private Toolbar mToolbar;
     private ViewGroup mDataContainer;
     private ProgressBar mProgressBar;
     private TextView mMessageToUser, mName, mPlatform;
@@ -29,11 +39,12 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
 
     public PersonDetailFragment() {}
 
-    public static PersonDetailFragment newInstance(@Nullable Long personId) {
+    public static PersonDetailFragment newInstance(boolean twoPaneMode, @Nullable Long personId) {
         PersonDetailFragment fragment = new PersonDetailFragment();
 
         Bundle args = new Bundle();
         if (personId != null) {
+            args.putBoolean(TWO_PANE_MODE_KEY, twoPaneMode);
             args.putLong(PERSON_ID_KEY, personId);
         }
         fragment.setArguments(args);
@@ -58,6 +69,8 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
         if (selectedPersonId != -1) {
             mPresenter.loadPerson(selectedPersonId);
         }
+
+        mTwoPaneMode = getArguments().getBoolean(TWO_PANE_MODE_KEY);
     }
 
     @Override
@@ -65,6 +78,8 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.person_detail_fragment, container, false);
 
+        mToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.toolbar_layout);
+        mToolbar = (Toolbar) view.findViewById(R.id.person_detail_toolbar);
         mDataContainer = (ViewGroup) view.findViewById(R.id.person_detail_data_container);
         mProgressBar = (ProgressBar) view.findViewById(R.id.person_detail_progress_bar);
         mMessageToUser = (TextView) view.findViewById(R.id.person_detail_message);
@@ -75,6 +90,17 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
         mPersonalDetails = (TextView) view.findViewById(R.id.person_detail_personal_info);
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (!mTwoPaneMode) {
+            // If not in two-pane mode, then we're in PersonDetailActivity and we need to set
+            // the support action bar
+            ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        }
     }
 
     @Override
@@ -106,6 +132,11 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
     public void showSelectAPersonMessage() {
         updateVisibilityToShowMessage();
         mMessageToUser.setText(R.string.please_select_person);
+    }
+
+    @Override
+    public void showFavColor(String favColor) {
+        mToolbarLayout.setContentScrimColor(ColorParseUtil.ParseColorByName(favColor));
     }
 
     @Override

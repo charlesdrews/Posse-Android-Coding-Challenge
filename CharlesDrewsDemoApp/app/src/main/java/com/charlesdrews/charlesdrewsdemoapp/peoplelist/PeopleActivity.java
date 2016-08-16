@@ -2,12 +2,8 @@ package com.charlesdrews.charlesdrewsdemoapp.peoplelist;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -19,8 +15,7 @@ import com.charlesdrews.charlesdrewsdemoapp.persondetail.PersonDetailFragment;
 
 public class PeopleActivity extends AppCompatActivity implements OnPersonSelectedListener {
 
-    private boolean mTabletLandscapeMode = false;
-    private PeopleFragment mPeopleFragment;
+    private boolean mTwoPanesMode = false;
     private PersonDetailFragment mPersonDetailFragment;
 
     @Override
@@ -31,21 +26,21 @@ public class PeopleActivity extends AppCompatActivity implements OnPersonSelecte
         setSupportActionBar(toolbar);
 
         // Set up people list fragment
-        mPeopleFragment = PeopleFragment.newInstance(null);
-        mPeopleFragment.setOnPersonSelectedListener(this);
+        PeopleFragment peopleFragment = PeopleFragment.newInstance(null);
+        peopleFragment.setOnPersonSelectedListener(this);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.people_fragment_container, mPeopleFragment)
+                .replace(R.id.people_fragment_container, peopleFragment)
                 .commit();
 
         // Set up person detail fragment (if container present)
         FrameLayout detailFragmentContainer = (FrameLayout)
                 findViewById(R.id.person_detail_fragment_container);
 
-        mTabletLandscapeMode = (detailFragmentContainer != null);
+        mTwoPanesMode = (detailFragmentContainer != null);
 
-        if (mTabletLandscapeMode) {
-            mPersonDetailFragment = PersonDetailFragment.newInstance(null);
+        if (mTwoPanesMode) {
+            mPersonDetailFragment = PersonDetailFragment.newInstance(true, null);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.person_detail_fragment_container, mPersonDetailFragment)
@@ -77,7 +72,7 @@ public class PeopleActivity extends AppCompatActivity implements OnPersonSelecte
 
     @Override
     public void onPersonSelected(long personId) {
-        if (mTabletLandscapeMode) {
+        if (mTwoPanesMode) {
             mPersonDetailFragment.loadPerson(personId);
         } else {
             Intent intent = new Intent(PeopleActivity.this, PersonDetailActivity.class);

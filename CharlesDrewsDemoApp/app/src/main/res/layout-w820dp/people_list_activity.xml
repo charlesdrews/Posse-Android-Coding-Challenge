@@ -29,7 +29,8 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:baselineAligned="false"
+            android:showDividers="middle"
+            android:divider="@drawable/vertical_divider"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -39,19 +40,11 @@
                 android:layout_weight="0.5"
                 android:layout_height="match_parent"/>
 
-            <View
-                android:background="@color/colorPrimaryDark"
-                android:layout_marginLeft="@dimen/vertical_divider_margin"
-                android:layout_marginRight="@dimen/vertical_divider_margin"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"/>
-
             <FrameLayout
                 android:id="@+id/person_detail_fragment_container"
                 android:layout_width="0dp"
                 android:layout_weight="0.5"
                 android:layout_height="match_parent"/>
-
         </LinearLayout>
 
     </LinearLayout>

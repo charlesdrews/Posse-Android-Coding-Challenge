@@ -36,6 +36,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
 
     private PeopleContract.Presenter mPresenter;
     private OnPersonSelectedListener mOnPersonSelectedListener;
+
     private ProgressBar mProgressBar;
     private TextView mDataNotAvailable;
     private ViewGroup mDataContainer;

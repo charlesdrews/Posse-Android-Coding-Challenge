@@ -49,6 +49,7 @@
 
             <SearchView
                 android:id="@+id/people_search_view"
+                android:queryHint=""
                 android:iconifiedByDefault="false"
                 android:gravity="end"
                 android:layout_marginLeft="@dimen/people_list_filter_search_margin"
