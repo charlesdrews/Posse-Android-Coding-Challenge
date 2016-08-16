@@ -70,9 +70,9 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter {
         mPersonViewRef.get().showLocationDetails(builder.toString());
 
         builder = new StringBuilder();
-        builder.append("Phone number: ").append(mLoadedPerson.getPhoneNumber()).append("\n")
-                .append("Favorite color: ").append(mLoadedPerson.getFavoriteColor()).append("\n")
-                .append("Age: ").append(mLoadedPerson.getAge()).append("\n")
+        builder.append("Phone number: ").append(mLoadedPerson.getPhoneNumber()).append("\n\n")
+                .append("Favorite color: ").append(mLoadedPerson.getFavoriteColor()).append("\n\n")
+                .append("Age: ").append(mLoadedPerson.getAge()).append("\n\n")
                 .append("Weight: ").append(mLoadedPerson.getWeight());
         mPersonViewRef.get().showPersonalDetails(builder.toString());
     }

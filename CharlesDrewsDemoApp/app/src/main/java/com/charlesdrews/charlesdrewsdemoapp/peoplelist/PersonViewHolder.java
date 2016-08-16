@@ -1,13 +1,12 @@
 package com.charlesdrews.charlesdrewsdemoapp.peoplelist;
 
-import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.charlesdrews.charlesdrewsdemoapp.ColorParseUtil;
+import com.charlesdrews.charlesdrewsdemoapp.ColorUtil;
 import com.charlesdrews.charlesdrewsdemoapp.R;
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.DataBinder;
@@ -34,7 +33,12 @@ public class PersonViewHolder extends RecyclerView.ViewHolder
 
     @Override
     public void bindData(Person data) {
-        mImageView.setBackgroundColor(ColorParseUtil.ParseColorByName(data.getFavoriteColor()));
+        int color = ColorUtil.ParseColorByName(data.getFavoriteColor());
+        if (color == -1) {
+            color = ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary);
+        }
+
+        mImageView.setBackgroundColor(color);
         mNameView.setText(data.getFirstName());
         mDescriptionView.setText(mDescriptionView.getContext().getString(
                 R.string.person_list_item_description, data.getPlatform(), data.getLocality()));

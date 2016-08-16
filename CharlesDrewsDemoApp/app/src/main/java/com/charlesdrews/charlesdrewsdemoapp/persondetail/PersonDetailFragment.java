@@ -2,19 +2,20 @@ package com.charlesdrews.charlesdrewsdemoapp.persondetail;
 
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.charlesdrews.charlesdrewsdemoapp.ColorParseUtil;
+import com.charlesdrews.charlesdrewsdemoapp.ColorUtil;
 import com.charlesdrews.charlesdrewsdemoapp.Injection;
 import com.charlesdrews.charlesdrewsdemoapp.PresenterCache;
 import com.charlesdrews.charlesdrewsdemoapp.R;
@@ -34,7 +35,7 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
     private Toolbar mToolbar;
     private ViewGroup mDataContainer;
     private ProgressBar mProgressBar;
-    private TextView mMessageToUser, mName, mPlatform;
+    private TextView mMessageToUser, mPlatform;
     private TextView mLocation, mLocationDetails, mPersonalDetails;
 
     public PersonDetailFragment() {}
@@ -43,8 +44,8 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
         PersonDetailFragment fragment = new PersonDetailFragment();
 
         Bundle args = new Bundle();
+        args.putBoolean(TWO_PANE_MODE_KEY, twoPaneMode);
         if (personId != null) {
-            args.putBoolean(TWO_PANE_MODE_KEY, twoPaneMode);
             args.putLong(PERSON_ID_KEY, personId);
         }
         fragment.setArguments(args);
@@ -71,6 +72,7 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
         }
 
         mTwoPaneMode = getArguments().getBoolean(TWO_PANE_MODE_KEY);
+        Log.d(TAG, "onCreate: two pane? " + mTwoPaneMode);
     }
 
     @Override
@@ -83,7 +85,6 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
         mDataContainer = (ViewGroup) view.findViewById(R.id.person_detail_data_container);
         mProgressBar = (ProgressBar) view.findViewById(R.id.person_detail_progress_bar);
         mMessageToUser = (TextView) view.findViewById(R.id.person_detail_message);
-        mName = (TextView) view.findViewById(R.id.person_detail_name);
         mPlatform = (TextView) view.findViewById(R.id.person_detail_platform);
         mLocation = (TextView) view.findViewById(R.id.person_detail_location);
         mLocationDetails = (TextView) view.findViewById(R.id.person_detail_location_details);
@@ -96,9 +97,14 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (!mTwoPaneMode) {
-            // If not in two-pane mode, then we're in PersonDetailActivity and we need to set
-            // the support action bar
+        if (mTwoPaneMode) {
+            // Don't want a status bar showing up below PeopleActivity's toolbar
+            mToolbarLayout.setStatusBarScrimResource(android.R.color.transparent);
+        } else {
+            // But do want the status bar to show if in PersonalDetailActivity
+            mToolbarLayout.setStatusBarScrimResource(R.color.colorPrimaryDark);
+
+            // Also set support action bar for menu
             ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         }
     }
@@ -136,13 +142,18 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
 
     @Override
     public void showFavColor(String favColor) {
-        mToolbarLayout.setContentScrimColor(ColorParseUtil.ParseColorByName(favColor));
+        int color = ColorUtil.ParseColorByName(favColor);
+        if (color == -1) {
+            color = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+        }
+        mToolbarLayout.setBackgroundColor(color);
+        mToolbarLayout.setExpandedTitleColor(ColorUtil.GetAppropriateTextColor(color));
     }
 
     @Override
     public void showName(String name) {
         updateVisibilityToDisplayData();
-        mName.setText(name);
+        mToolbar.setTitle(name);
     }
 
     @Override

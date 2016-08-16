@@ -47,17 +47,6 @@
                 android:layout_weight="0.25"
                 android:layout_height="wrap_content"/>
 
-            <SearchView
-                android:id="@+id/people_search_view"
-                android:queryHint=""
-                android:iconifiedByDefault="false"
-                android:gravity="end"
-                android:layout_marginLeft="@dimen/people_list_filter_search_margin"
-                android:layout_marginStart="@dimen/people_list_filter_search_margin"
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:layout_height="wrap_content"/>
-
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
