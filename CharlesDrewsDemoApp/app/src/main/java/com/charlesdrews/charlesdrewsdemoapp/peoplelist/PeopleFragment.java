@@ -58,6 +58,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
     private ViewGroup mFilterBar;
     private TextView mActivePlatformFilter, mActiveLocationFilter;
     private SearchView mSearchView;
+    private String mSearchQuery;
 
     public PeopleFragment() {}
 
@@ -186,6 +187,11 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
                 mSearchView.setIconified(true);
             }
         });
+
+        // If the presenter already supplied a searchQuery (e.g. after device rotation), apply it
+        if (mSearchQuery != null) {
+            showSearchQuery(mSearchQuery);
+        }
     }
 
     @Override
@@ -282,8 +288,12 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
 
     @Override
     public void showSearchQuery(@NonNull String searchQuery) {
-        mSearchView.setIconified(false);
-        mSearchView.setQuery(searchQuery, false);
+        if (mSearchView != null) {
+            mSearchView.setIconified(false);
+            mSearchView.setQuery(searchQuery, false);
+        } else {
+            mSearchQuery = searchQuery;
+        }
     }
 
     @Override
