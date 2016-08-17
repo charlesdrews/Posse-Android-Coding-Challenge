@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -164,16 +165,23 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
         mSearchView.setSearchableInfo(searchManager
                 .getSearchableInfo(getActivity().getComponentName()));
 
+        // Prevent search view from taking up whole screen in landscape on small device
+        int options = mSearchView.getImeOptions();
+        mSearchView.setImeOptions(options|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+
+        // Set search view listeners
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 mPresenter.loadPeople(query);
+                mSearchQuery = query;
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 mPresenter.loadPeople(newText);
+                mSearchQuery = newText;
                 return true;
             }
         });
@@ -185,6 +193,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
             public void onClick(View view) {
                 mPresenter.loadPeople(null);
                 mSearchView.setIconified(true);
+                mSearchQuery = null;
             }
         });
 
@@ -205,7 +214,12 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
                 return true;
 
             case R.id.action_reload:
+                mPresenter.setFilters(null, null);
+                mSearchQuery = null;
                 mPresenter.loadPeople(null);
+                if (mSearchView != null) {
+                    mSearchView.setIconified(true);
+                }
                 return true;
 
             case R.id.action_settings:

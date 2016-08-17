@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -109,6 +111,12 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
 
             // Also set support action bar for menu
             ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+
+            // And provide up navigation to PeopleActivity
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
         }
     }
 
@@ -132,6 +140,9 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(getActivity());
+                return true;
             case R.id.action_settings:
                 return true;
             default:
