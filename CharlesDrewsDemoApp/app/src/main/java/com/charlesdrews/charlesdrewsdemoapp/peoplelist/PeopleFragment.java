@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -91,15 +92,12 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
         mDataContainer = (ViewGroup) view.findViewById(R.id.people_list_data_container);
 
         mFilterBar = (ViewGroup) view.findViewById(R.id.filter_bar);
-        mActivePlatformFilter = (TextView) view.findViewById(R.id.active_platform_filter)
-                .findViewById(R.id.active_filter_box);
-        mActiveLocationFilter = (TextView) view.findViewById(R.id.active_location_filter)
-                .findViewById(R.id.active_filter_box);
+        mActivePlatformFilter = (TextView) view.findViewById(R.id.active_platform_filter);
+        mActiveLocationFilter = (TextView) view.findViewById(R.id.active_location_filter);
 
         // Set up RecyclerView
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.people_list_recycler_view);
 
-        //TODO - grid if in landscape but not on tablet
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
 
@@ -108,10 +106,31 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
                 getResources().getDimension(R.dimen.horizontal_divider_margin));
         recyclerView.addItemDecoration(itemDecoration);
 
-
         mPeople = new ArrayList<>();
         mAdapter = new PeopleRvAdapter(mPeople, this);
         recyclerView.setAdapter(mAdapter);
+
+
+        // Set up active filter boxes
+        mActivePlatformFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActivePlatformFilter.setText(null);
+                mActivePlatformFilter.setVisibility(View.GONE);
+                hideFilterBarIfBothFiltersInactive();
+                mPresenter.setFilters(null, mActiveLocationFilter.getText().toString());
+            }
+        });
+
+        mActiveLocationFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActiveLocationFilter.setText(null);
+                mActiveLocationFilter.setVisibility(View.GONE);
+                hideFilterBarIfBothFiltersInactive();
+                mPresenter.setFilters(mActivePlatformFilter.getText().toString(), null);
+            }
+        });
 
         return view;
     }
@@ -185,7 +204,12 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
     @Override
     public void showFilterDialog(@NonNull ArrayList<String> platforms,
                                  @NonNull ArrayList<String> locations) {
-        FilterDialogFragment dialogFragment = FilterDialogFragment.newInstance(platforms, locations);
+        FilterDialogFragment dialogFragment = FilterDialogFragment
+                .newInstance(platforms, locations,
+                        mActivePlatformFilter.getText().toString(),
+                        mActiveLocationFilter.getText().toString());
+
+        dialogFragment.setOnFiltersSelectedListener(this);
         dialogFragment.show(getFragmentManager(), FILTER_DIALOG_FRAGMENT_TAG);
     }
 
@@ -196,28 +220,31 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
     }
 
     @Override
-    public void showFilterBar(boolean show) {
-        //TODO
-    }
-
-    @Override
     public void showPlatFormFilter(@NonNull String platformFilter) {
-        //TODO
+        mFilterBar.setVisibility(View.VISIBLE);
+        mActivePlatformFilter.setVisibility(View.VISIBLE);
+        mActivePlatformFilter.setText(platformFilter);
     }
 
     @Override
     public void hidePlatformFilter() {
-        //TODO
+        mActivePlatformFilter.setVisibility(View.GONE);
+        mActivePlatformFilter.setText(null);
+        hideFilterBarIfBothFiltersInactive();
     }
 
     @Override
     public void showLocationFilter(@NonNull String locationFilter) {
-        //TODO
+        mFilterBar.setVisibility(View.VISIBLE);
+        mActiveLocationFilter.setVisibility(View.VISIBLE);
+        mActiveLocationFilter.setText(locationFilter);
     }
 
     @Override
     public void hideLocationFilter() {
-        //TODO
+        mActiveLocationFilter.setVisibility(View.GONE);
+        mActiveLocationFilter.setText(null);
+        hideFilterBarIfBothFiltersInactive();
     }
 
     @Override
@@ -235,20 +262,19 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
     @Override
     public void onFiltersSelected(@Nullable String platformSelected,
                                   @Nullable String locationSelected) {
-        if (platformSelected == null) {
-            mPresenter.removePlatformFilter();
-        } else {
-            mPresenter.applyPlatformFilter(platformSelected);
-        }
-
-        if (locationSelected == null) {
-            mPresenter.removeLocationFilter();
-        } else {
-            mPresenter.applyLocationFilter(locationSelected);
-        }
+        mPresenter.setFilters(platformSelected, locationSelected);
     }
 
     public void setOnPersonSelectedListener(@NonNull OnPersonSelectedListener listener) {
         mOnPersonSelectedListener = listener;
+    }
+
+    public void hideFilterBarIfBothFiltersInactive() {
+        if (mActivePlatformFilter.getVisibility() == View.GONE &&
+                mActiveLocationFilter.getVisibility() == View.GONE) {
+            mFilterBar.setVisibility(View.GONE);
+        } else {
+            mFilterBar.setVisibility(View.VISIBLE);
+        }
     }
 }

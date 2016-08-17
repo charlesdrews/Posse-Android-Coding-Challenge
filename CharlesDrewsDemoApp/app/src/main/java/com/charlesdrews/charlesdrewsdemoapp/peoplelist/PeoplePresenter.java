@@ -24,6 +24,7 @@ public class PeoplePresenter implements PeopleContract.Presenter {
     private List<Person> mLoadedPeople;
 
     private ArrayList<String> mPlatforms, mLocations;
+    private String mSelectedPlatform, mSelectedLocation, mSearchQuery;
 
     public PeoplePresenter(@NonNull PeopleRepository peopleRepository) {
         mPeopleRepository = peopleRepository;
@@ -52,7 +53,7 @@ public class PeoplePresenter implements PeopleContract.Presenter {
                 && searchQuery == null && viewIsActive()) {
 
             mPeopleViewRef.get().showLoadingIndicator(false);
-            mPeopleViewRef.get().showPeople(mLoadedPeople);
+            mPeopleViewRef.get().showPeople(getFilteredPeople());
 
         } else {
             new LoadPeopleAsyncTask().execute(searchQuery);
@@ -64,47 +65,20 @@ public class PeoplePresenter implements PeopleContract.Presenter {
         if (mPlatforms != null && mLocations != null && viewIsActive()) {
             mPeopleViewRef.get().showFilterDialog(mPlatforms, mLocations);
         } else {
-            mPeopleRepository.getPlatformAndLocationValues(
-                    new PeopleDataSource.GetPlatformAndLocationValuesCallback() {
-                        @Override
-                        public void onPlatformAndLocationValuesLoaded(List<String> platforms,
-                                                                      List<String> locations) {
-                            if (viewIsActive()) {
-                                mPeopleViewRef.get()
-                                        .showFilterDialog(new ArrayList<>(platforms),
-                                                new ArrayList<>(locations));
-                            }
-                        }
-
-                        @Override
-                        public void onDataNotAvailable() {
-                            if (viewIsActive()) {
-                                mPeopleViewRef.get().showUnableToFilterMessage();
-                            }
-                        }
-                    }
-            );
+            new LoadPlatformsAndLocationsAsyncTask().execute();
         }
     }
 
     @Override
-    public void applyPlatformFilter(@NonNull String platformFilter) {
+    public void setFilters(@Nullable String selectedPlatform, @Nullable String selectedLocation) {
 
-    }
+        mSelectedPlatform = (selectedPlatform == null || selectedPlatform.isEmpty())
+                ? null : selectedPlatform;
 
-    @Override
-    public void removePlatformFilter() {
+        mSelectedLocation = (selectedLocation == null || selectedLocation.isEmpty())
+                ? null : selectedLocation;
 
-    }
-
-    @Override
-    public void applyLocationFilter(@NonNull String locationFilter) {
-
-    }
-
-    @Override
-    public void removeLocationFilter() {
-
+        loadPeople(mSearchQuery);
     }
 
     @Override
@@ -116,6 +90,45 @@ public class PeoplePresenter implements PeopleContract.Presenter {
 
     private boolean viewIsActive() {
         return mPeopleViewRef != null && mPeopleViewRef.get() != null;
+    }
+
+    private List<Person> getFilteredPeople() {
+        // Start with all loaded people
+        List<Person> filteredPeople = new ArrayList<>(mLoadedPeople);
+
+        // Remove anyone whose platform doesn't match the filter
+        if (mSelectedPlatform != null) {
+            for (Person person : mLoadedPeople) {
+                if (!person.getPlatform().equals(mSelectedPlatform)) {
+                    filteredPeople.remove(person);
+                }
+            }
+        }
+
+        // Remove anyone whose location doesn't match the filter
+        if (mSelectedLocation != null) {
+            for (Person person : mLoadedPeople) {
+                if (!person.getLocality().equals(mSelectedLocation)) {
+                    filteredPeople.remove(person);
+                }
+            }
+        }
+
+        if (viewIsActive()) {
+            if (mSelectedPlatform != null) {
+                mPeopleViewRef.get().showPlatFormFilter(mSelectedPlatform);
+            } else {
+                mPeopleViewRef.get().hidePlatformFilter();
+            }
+
+            if (mSelectedLocation != null) {
+                mPeopleViewRef.get().showLocationFilter(mSelectedLocation);
+            } else {
+                mPeopleViewRef.get().hideLocationFilter();
+            }
+        }
+
+        return filteredPeople;
     }
 
     private class LoadPeopleAsyncTask extends AsyncTask<String, Void, Void> {
@@ -145,8 +158,42 @@ public class PeoplePresenter implements PeopleContract.Presenter {
                 if (mLoadedPeople.size() == 0) {
                     mPeopleViewRef.get().showDataNotAvailableIndicator();
                 } else {
-                    mPeopleViewRef.get().showPeople(mLoadedPeople);
+                    mPeopleViewRef.get().showPeople(getFilteredPeople());
                 }
+            }
+        }
+    }
+
+    private class LoadPlatformsAndLocationsAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            mPeopleRepository.getPlatformAndLocationValues(
+                    new PeopleDataSource.GetPlatformAndLocationValuesCallback() {
+                        @Override
+                        public void onPlatformAndLocationValuesLoaded(List<String> platforms,
+                                                                      List<String> locations) {
+                            mPlatforms = new ArrayList<>(platforms);
+                            mLocations = new ArrayList<>(locations);
+
+                        }
+
+                        @Override
+                        public void onDataNotAvailable() {}
+                    }
+            );
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if (mPlatforms != null && mLocations != null && viewIsActive()) {
+                mPeopleViewRef.get().showFilterDialog(mPlatforms, mLocations);
+            }
+            if (viewIsActive()) {
+                mPeopleViewRef.get().showUnableToFilterMessage();
             }
         }
     }

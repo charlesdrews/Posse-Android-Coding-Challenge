@@ -25,21 +25,28 @@ import java.util.ArrayList;
  * Created by charlie on 8/16/16.
  */
 public class FilterDialogFragment extends DialogFragment {
-    public static final String PLATFORM_LIST_KEY = "platform_list_key";
-    public static final String LOCATION_LIST_KEY = "location_list_key";
+    private static final String PLATFORM_LIST_KEY = "platform_list_key";
+    private static final String LOCATION_LIST_KEY = "location_list_key";
+    private static final String SELECTED_PLATFORM_KEY = "selected_platform_key";
+    private static final String SELECTED_LOCATION_KEY = "selected_location_key";
 
     private ArrayList<String> mPlatforms, mLocations;
+    private String mSelectedPlatform, mSelectedLocation;
     private OnFiltersSelectedListener mListener;
 
     public FilterDialogFragment() {}
 
     public static FilterDialogFragment newInstance(@NonNull ArrayList<String> platforms,
-                                                   @NonNull ArrayList<String> locations) {
+                                                   @NonNull ArrayList<String> locations,
+                                                   @Nullable String selectedPlatform,
+                                                   @Nullable String selectedLocation) {
         FilterDialogFragment fragment = new FilterDialogFragment();
 
         Bundle args = new Bundle();
         args.putStringArrayList(PLATFORM_LIST_KEY, platforms);
         args.putStringArrayList(LOCATION_LIST_KEY, locations);
+        args.putString(SELECTED_PLATFORM_KEY, selectedPlatform);
+        args.putString(SELECTED_LOCATION_KEY, selectedLocation);
         fragment.setArguments(args);
 
         return fragment;
@@ -52,11 +59,21 @@ public class FilterDialogFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mPlatforms = getArguments().getStringArrayList(PLATFORM_LIST_KEY);
         mLocations = getArguments().getStringArrayList(LOCATION_LIST_KEY);
+        mSelectedPlatform = getArguments().getString(SELECTED_PLATFORM_KEY);
+        mSelectedLocation = getArguments().getString(SELECTED_LOCATION_KEY);
 
-        mPlatforms.add(0, getString(R.string.platform_filter_initial_value));
-        mLocations.add(0, getString(R.string.location_filter_initial_value));
+        String allPlatforms = getString(R.string.platform_filter_initial_value);
+        if (!mPlatforms.get(0).equals(allPlatforms)) {
+            mPlatforms.add(0, allPlatforms);
+        }
+
+        String allLocations = getString(R.string.location_filter_initial_value);
+        if (!mLocations.get(0).equals(allLocations)) {
+            mLocations.add(0, allLocations);
+        }
     }
 
     @SuppressLint("InflateParams") // Must pass null root when inflating view for AlertDialog
@@ -75,11 +92,19 @@ public class FilterDialogFragment extends DialogFragment {
         platformAapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         platformSpinner.setAdapter(platformAapter);
 
+        if (mSelectedPlatform != null && mPlatforms.contains(mSelectedPlatform)) {
+            platformSpinner.setSelection(mPlatforms.indexOf(mSelectedPlatform));
+        }
+
         // Set up location Spinner
         ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, mLocations);
         locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(locationAdapter);
+
+        if (mSelectedLocation != null && mLocations.contains(mSelectedLocation)) {
+            locationSpinner.setSelection(mLocations.indexOf(mSelectedLocation));
+        }
 
         // Set up AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext())

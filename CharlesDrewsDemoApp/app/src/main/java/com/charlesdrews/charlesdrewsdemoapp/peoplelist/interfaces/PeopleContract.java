@@ -26,7 +26,6 @@ public interface PeopleContract {
         // Filter and search
         void showFilterDialog(@NonNull ArrayList<String> platforms, @NonNull ArrayList<String> locations);
         void showUnableToFilterMessage();
-        void showFilterBar(boolean show);
         void showPlatFormFilter(@NonNull String platformFilter);
         void hidePlatformFilter();
         void showLocationFilter(@NonNull String locationFilter);
@@ -43,10 +42,7 @@ public interface PeopleContract {
 
         // Filter and search
         void startFilterProcess();
-        void applyPlatformFilter(@NonNull String platformFilter);
-        void removePlatformFilter();
-        void applyLocationFilter(@NonNull String locationFilter);
-        void removeLocationFilter();
+        void setFilters(@Nullable String selectedPlatform, @Nullable String selectedLocation);
 
         // Navigation
         void handlePersonClicked(long personId);
