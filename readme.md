@@ -50,4 +50,5 @@
 
 - Data repository constructed as though it were pulling data from a web API
   - Separate local (SQLite) and remote (in this case, reading from local JSON file, but typically would be from HTTP request) repositories both implement the same data source interface
+  - The "remote" data source parses the JSON file using GSON and corresponding model classes. These are used to create instances of the primary model, the Person class, which is stored in the local database and used throughout the app.
   - A third, presenter-facing data repository also implements the data source interface, utilizes both the local and remote sources, and allows the presenter to be agnostic (and unaware) as to whether data is coming from local or remote source
