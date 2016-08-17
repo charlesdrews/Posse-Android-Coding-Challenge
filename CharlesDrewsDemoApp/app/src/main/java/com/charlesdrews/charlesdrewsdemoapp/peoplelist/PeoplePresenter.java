@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleDataSource;
-import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleRepository;
 import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.PeopleContract;
 
 import java.lang.ref.WeakReference;
@@ -20,13 +19,13 @@ import java.util.List;
  */
 public class PeoplePresenter implements PeopleContract.Presenter {
     private WeakReference<PeopleContract.View> mPeopleViewRef;
-    private PeopleRepository mPeopleRepository;
+    private PeopleDataSource mPeopleRepository;
     private List<Person> mLoadedPeople;
 
     private ArrayList<String> mPlatforms, mLocations;
     private String mSelectedPlatform, mSelectedLocation, mSearchQuery;
 
-    public PeoplePresenter(@NonNull PeopleRepository peopleRepository) {
+    public PeoplePresenter(@NonNull PeopleDataSource peopleRepository) {
         mPeopleRepository = peopleRepository;
         mLoadedPeople = new ArrayList<>();
     }
@@ -170,9 +169,11 @@ public class PeoplePresenter implements PeopleContract.Presenter {
             if (viewIsActive()) {
                 mPeopleViewRef.get().showLoadingIndicator(false);
 
-                if (mLoadedPeople.size() == 0) {
+                // Notify user if there was a problem loading data
+                if (mSearchQuery == null && mLoadedPeople.size() == 0) {
                     mPeopleViewRef.get().showDataNotAvailableIndicator();
                 } else {
+                    // Could still be zero people if search query has not matches
                     mPeopleViewRef.get().showPeople(getFilteredPeople());
                 }
             }

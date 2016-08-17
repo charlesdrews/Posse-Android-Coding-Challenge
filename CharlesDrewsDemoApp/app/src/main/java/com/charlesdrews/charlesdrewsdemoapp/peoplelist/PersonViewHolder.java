@@ -13,12 +13,11 @@ import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.DataBinder;
 
 /**
  * Binds data to the views in a Person list item
+ *
  * Created by charlie on 8/13/16.
  */
 public class PersonViewHolder extends RecyclerView.ViewHolder
         implements DataBinder<Person> {
-
-    private static final String TAG = "PersonViewHolder";
 
     private ImageView mImageView;
     private TextView mNameView, mDescriptionView;

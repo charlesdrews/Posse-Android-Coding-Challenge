@@ -99,8 +99,8 @@ public class Person {
 
         /**
          * Use a GSON-generated Location object to build a Person
-         * @param location
-         * @return
+         * @param location a GSON model class
+         * @return this Builder
          */
         public Builder setLocation(Location location) {
             mLocationPublicId = location.getPublicId();
@@ -113,8 +113,8 @@ public class Person {
 
         /**
          * Use a GSON-generated Service object to build a Person
-         * @param service
-         * @return
+         * @param service a GSON model class
+         * @return this Builder
          */
         public Builder setService(Service service) {
             mPlatform = service.getPlatform();
@@ -123,8 +123,8 @@ public class Person {
 
         /**
          * Use a GSON-generated Programmer object to build a Person
-         * @param programmer
-         * @return
+         * @param programmer a GSON model class
+         * @return this Builder
          */
         public Builder setProgrammer(Programmer programmer) {
             mFirstName = programmer.getName();

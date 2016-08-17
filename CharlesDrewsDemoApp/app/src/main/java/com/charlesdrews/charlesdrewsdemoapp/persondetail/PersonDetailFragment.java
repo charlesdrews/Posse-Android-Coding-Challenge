@@ -3,6 +3,7 @@ package com.charlesdrews.charlesdrewsdemoapp.persondetail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
@@ -35,6 +36,7 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
     private boolean mTwoPaneMode;
     private PersonDetailContract.Presenter mPresenter;
 
+    private AppBarLayout mAppBarLayout;
     private CollapsingToolbarLayout mToolbarLayout;
     private Toolbar mToolbar;
     private ViewGroup mDataContainer;
@@ -85,6 +87,7 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.person_detail_fragment, container, false);
 
+        mAppBarLayout = (AppBarLayout) view.findViewById(R.id.app_bar);
         mToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.toolbar_layout);
         mToolbar = (Toolbar) view.findViewById(R.id.person_detail_toolbar);
         mDataContainer = (ViewGroup) view.findViewById(R.id.person_detail_data_container);
@@ -212,12 +215,14 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
     }
 
     private void updateVisibilityToDisplayData() {
+        mAppBarLayout.setVisibility(View.VISIBLE);
         mDataContainer.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.GONE);
         mMessageToUser.setVisibility(View.GONE);
     }
 
     private void updateVisibilityToShowMessage() {
+        mAppBarLayout.setVisibility(View.GONE);
         mDataContainer.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.GONE);
         mMessageToUser.setVisibility(View.VISIBLE);

@@ -7,5 +7,6 @@ package com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces;
  * Created by charlie on 8/13/16.
  */
 public interface DataBinder<T> {
+
     void bindData(T data);
 }

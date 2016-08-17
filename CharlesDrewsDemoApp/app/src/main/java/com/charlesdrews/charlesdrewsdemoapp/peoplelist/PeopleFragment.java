@@ -2,17 +2,14 @@ package com.charlesdrews.charlesdrewsdemoapp.peoplelist;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,16 +17,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.charlesdrews.charlesdrewsdemoapp.Injection;
 import com.charlesdrews.charlesdrewsdemoapp.PresenterCache;
 import com.charlesdrews.charlesdrewsdemoapp.R;
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
-import com.charlesdrews.charlesdrewsdemoapp.Injection;
 import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.OnFiltersSelectedListener;
 import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.OnPersonClickedListener;
 import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.OnPersonSelectedListener;
@@ -39,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Controls the UI for the People List feature
  */
 public class PeopleFragment extends Fragment implements PeopleContract.View,
         OnPersonClickedListener, OnFiltersSelectedListener {
@@ -51,7 +46,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
     private OnPersonSelectedListener mOnPersonSelectedListener;
 
     private ProgressBar mProgressBar;
-    private TextView mDataNotAvailable;
+    private TextView mMessageView;
     private ViewGroup mDataContainer;
     private PeopleRvAdapter mAdapter;
     private List<Person> mPeople;
@@ -95,7 +90,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
         View view = inflater.inflate(R.layout.people_list_fragment, container, false);
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.people_list_progress_bar);
-        mDataNotAvailable = (TextView) view.findViewById(R.id.people_list_data_not_available);
+        mMessageView = (TextView) view.findViewById(R.id.people_list_message);
         mDataContainer = (ViewGroup) view.findViewById(R.id.people_list_data_container);
 
         mFilterBar = (ViewGroup) view.findViewById(R.id.filter_bar);
@@ -233,7 +228,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
     @Override
     public void showLoadingIndicator(boolean show) {
         mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        mDataNotAvailable.setVisibility(View.GONE);
+        mMessageView.setVisibility(View.GONE);
     }
 
     @Override
@@ -244,14 +239,22 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
         mAdapter.notifyDataSetChanged();
 
         mProgressBar.setVisibility(View.GONE);
-        mDataNotAvailable.setVisibility(View.GONE);
+
+        if (people.size() == 0) {
+            mMessageView.setText(getString(R.string.no_search_results));
+            mMessageView.setVisibility(View.VISIBLE);
+        } else {
+            mMessageView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void showDataNotAvailableIndicator() {
         mProgressBar.setVisibility(View.GONE);
         mDataContainer.setVisibility(View.GONE);
-        mDataNotAvailable.setVisibility(View.VISIBLE);
+
+        mMessageView.setText(getString(R.string.data_not_available));
+        mMessageView.setVisibility(View.VISIBLE);
     }
 
     @Override

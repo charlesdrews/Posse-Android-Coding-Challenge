@@ -2,7 +2,6 @@ package com.charlesdrews.charlesdrewsdemoapp.persondetail;
 
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleDataSource;

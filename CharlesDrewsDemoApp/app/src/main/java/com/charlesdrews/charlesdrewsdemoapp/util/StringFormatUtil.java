@@ -15,7 +15,7 @@ public class StringFormatUtil {
      * @return "+## (###) ###-####" or "(###) ###-####" or "###-####", depending on number of digits
      */
     public static String formatPhoneNumber(@NonNull String phoneNum) {
-        // Remove non-digits and format nicely
+        // Remove non-digits first
         phoneNum = phoneNum.replaceAll("\\D","");
 
         if (phoneNum.length() > 10) {

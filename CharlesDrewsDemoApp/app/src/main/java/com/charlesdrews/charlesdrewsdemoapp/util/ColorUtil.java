@@ -23,7 +23,7 @@ public class ColorUtil {
 
     /**
      * Convert a string representing a color name to the corresponding color int
-     * @param colorName
+     * @param colorName String
      * @return the int representation of the color if name is parseable, else -1
      */
     public static int ParseColorByName(@NonNull String colorName) {

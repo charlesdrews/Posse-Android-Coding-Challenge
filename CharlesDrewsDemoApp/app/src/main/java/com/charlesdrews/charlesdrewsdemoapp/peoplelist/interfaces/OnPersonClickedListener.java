@@ -7,5 +7,6 @@ package com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces;
  * Created by charlie on 8/15/16.
  */
 public interface OnPersonClickedListener {
+
     void onPersonClicked(long personId);
 }

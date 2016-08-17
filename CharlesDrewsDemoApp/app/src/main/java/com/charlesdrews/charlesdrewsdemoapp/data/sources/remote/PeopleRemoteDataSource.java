@@ -52,7 +52,7 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
     /**
      * Reads json from local file, converts to objects, returns Person objects
      * @param searchQuery is currently ignored, since this is not making an API call
-     * @param callback
+     * @param callback to be implemented by the caller
      */
     @Override
     public void getPeople(@Nullable String searchQuery, @NonNull GetPeopleCallback callback) {
@@ -63,7 +63,7 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
 
         Gson gson = new Gson();
 
-        Root dataRoot = null;
+        Root dataRoot;
 
         try {
             dataRoot = gson.fromJson(reader, Root.class);
@@ -100,8 +100,8 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
     /**
      * This is just a stub - if the JSON were coming from an API instead of a local file, then
      * this method would be implemented.
-     * @param personId
-     * @param callback
+     * @param personId long
+     * @param callback to be implemented by the caller
      */
     @Override
     public void getPerson(long personId, @NonNull GetPersonDetailCallback callback) {
@@ -111,9 +111,8 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
     /**
      * This is just a stub - if the JSON were coming from an API instead of a local file, then
      * this method would be implemented.
-     * @param person
-     * @param callback
-     * @return
+     * @param person Person instance
+     * @param callback to be implemented by the caller
      */
     @Override
     public void savePerson(@NonNull Person person, @NonNull SavePersonCallback callback) {
@@ -123,7 +122,7 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
     /**
      * This is just a stub - if the JSON were coming from an API instead of a local file, then
      * this method would be implemented.
-     * @param callback
+     * @param callback to be implemented by the caller
      */
     @Override
     public void getPlatformAndLocationValues(@NonNull GetPlatformAndLocationValuesCallback callback) {

@@ -3,6 +3,8 @@ package com.charlesdrews.charlesdrewsdemoapp.data.sources.local;
 import android.provider.BaseColumns;
 
 /**
+ * Define database table and column names
+ *
  * Created by charlie on 8/13/16.
  */
 public final class DatabaseContract {

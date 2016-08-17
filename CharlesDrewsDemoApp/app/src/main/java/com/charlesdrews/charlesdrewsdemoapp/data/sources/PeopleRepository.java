@@ -79,7 +79,7 @@ public class PeopleRepository implements PeopleDataSource {
                             // This list of people doesn't include id values, since they came
                             // straight from the remote source, not from the database.
                             // Query the local database before returning, to be sure we have ids.
-                            mLocalDataSource.getPeople(searchQuery, callback);
+                            mLocalDataSource.getPeople(null, callback);
                         }
 
                         @Override
