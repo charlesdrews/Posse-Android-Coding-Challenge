@@ -8,6 +8,8 @@ import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import java.util.List;
 
 /**
+ * Define the responsibilities of a data source for this app and the necessary callbacks
+ *
  * Created by charlie on 8/14/16.
  */
 public interface PeopleDataSource {
@@ -34,7 +36,7 @@ public interface PeopleDataSource {
 
     void getPeople(@Nullable String searchQuery, @NonNull GetPeopleCallback callback);
 
-    void getPerson(@NonNull long personId, @NonNull GetPersonDetailCallback callback);
+    void getPerson(long personId, @NonNull GetPersonDetailCallback callback);
 
     void savePerson(@NonNull Person person, @NonNull SavePersonCallback callback);
 

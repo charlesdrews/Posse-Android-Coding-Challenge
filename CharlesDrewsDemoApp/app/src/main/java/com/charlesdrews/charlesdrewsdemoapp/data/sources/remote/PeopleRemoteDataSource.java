@@ -104,7 +104,7 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
      * @param callback
      */
     @Override
-    public void getPerson(@NonNull long personId, @NonNull GetPersonDetailCallback callback) {
+    public void getPerson(long personId, @NonNull GetPersonDetailCallback callback) {
         callback.onDataNotAvailable();
     }
 

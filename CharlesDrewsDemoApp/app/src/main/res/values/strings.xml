@@ -9,6 +9,7 @@
 
     <string name="please_select_person">Please select a person to view</string>
     <string name="data_not_available">Sorry, this data is not available</string>
+    <string name="search_hint">Search...</string>
     <string name="no_search_results">This search returned no results</string>
 
     <string name="person_list_item_description">%1$s | %2$s</string>

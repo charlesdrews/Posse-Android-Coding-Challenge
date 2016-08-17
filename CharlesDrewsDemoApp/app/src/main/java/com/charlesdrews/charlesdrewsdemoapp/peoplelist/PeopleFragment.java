@@ -1,13 +1,17 @@
 package com.charlesdrews.charlesdrewsdemoapp.peoplelist;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,6 +57,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
 
     private ViewGroup mFilterBar;
     private TextView mActivePlatformFilter, mActiveLocationFilter;
+    private SearchView mSearchView;
 
     public PeopleFragment() {}
 
@@ -150,26 +155,54 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_people_list, menu);
-        //TODO - set up searchview
+
+        // Set up search view
+        SearchManager searchManager = (SearchManager) getActivity()
+                .getSystemService(Context.SEARCH_SERVICE);
+        mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getActivity().getComponentName()));
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mPresenter.loadPeople(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mPresenter.loadPeople(newText);
+                return true;
+            }
+        });
+
+        // SearchView not closing on its own... do it manually
+        View closeBtn = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.loadPeople(null);
+                mSearchView.setIconified(true);
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_search:
+                return true;
+
             case R.id.action_filter:
                 mPresenter.startFilterProcess();
                 return true;
 
-            case R.id.action_search:
-                //TODO
-                return true;
-
             case R.id.action_reload:
-                //TODO
+                mPresenter.loadPeople(null);
                 return true;
 
             case R.id.action_settings:
-                //TODO
                 return true;
 
             default:
@@ -245,6 +278,12 @@ public class PeopleFragment extends Fragment implements PeopleContract.View,
         mActiveLocationFilter.setVisibility(View.GONE);
         mActiveLocationFilter.setText(null);
         hideFilterBarIfBothFiltersInactive();
+    }
+
+    @Override
+    public void showSearchQuery(@NonNull String searchQuery) {
+        mSearchView.setIconified(false);
+        mSearchView.setQuery(searchQuery, false);
     }
 
     @Override

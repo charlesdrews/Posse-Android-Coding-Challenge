@@ -30,6 +30,7 @@ public interface PeopleContract {
         void hidePlatformFilter();
         void showLocationFilter(@NonNull String locationFilter);
         void hideLocationFilter();
+        void showSearchQuery(@NonNull String searchQuery);
 
         // Navigation
         void launchPersonDetailUi(long personId);

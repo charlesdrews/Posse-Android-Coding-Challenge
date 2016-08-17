@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import com.charlesdrews.charlesdrewsdemoapp.data.sources.PeopleDataSource;
@@ -43,12 +42,14 @@ public class PeopleLocalDataSource implements PeopleDataSource {
         String[] selectionArgs = null;
 
         if (searchQuery != null) {
-            selection = DatabaseContract.PersonTable.COL_NAME_FIRST_NAME + " LIKE \"%?%\" OR " +
-                    DatabaseContract.PersonTable.COL_NAME_LOCALITY + " LIKE \"%?%\" OR " +
-                    DatabaseContract.PersonTable.COL_NAME_PLATFORM + " LIKE \"%?%\" OR " +
-                    DatabaseContract.PersonTable.COL_NAME_FAV_COLOR + " LIKE \"%?%\"";
+            selection = DatabaseContract.PersonTable.COL_NAME_FIRST_NAME + " LIKE ? OR " +
+                    DatabaseContract.PersonTable.COL_NAME_LOCALITY + " LIKE ? OR " +
+                    DatabaseContract.PersonTable.COL_NAME_PLATFORM + " LIKE ? OR " +
+                    DatabaseContract.PersonTable.COL_NAME_FAV_COLOR + " LIKE ?";
 
-            selectionArgs = new String[]{searchQuery, searchQuery, searchQuery, searchQuery};
+            String queryWithWildcards = "%" + searchQuery + "%";
+            selectionArgs = new String[]{queryWithWildcards, queryWithWildcards,
+                    queryWithWildcards, queryWithWildcards};
         }
 
         Cursor cursor = db.query(DatabaseContract.PersonTable.TABLE_NAME,
@@ -68,7 +69,7 @@ public class PeopleLocalDataSource implements PeopleDataSource {
     }
 
     @Override
-    public void getPerson(@NonNull long personId, @NonNull GetPersonDetailCallback callback) {
+    public void getPerson(long personId, @NonNull GetPersonDetailCallback callback) {
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
 
         String selection = DatabaseContract.PersonTable._ID + " = ?";
@@ -224,9 +225,6 @@ public class PeopleLocalDataSource implements PeopleDataSource {
                 cursor.moveToNext();
             }
         }
-
-        //TODO - check what happens if I call getter on field that wasn't set
-        Log.d("LocalData", "test field not set: " + people.get(0).getPhoneNumber());
 
         return people;
     }

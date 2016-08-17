@@ -35,7 +35,11 @@ public class PeoplePresenter implements PeopleContract.Presenter {
     public void bindView(@NonNull PeopleContract.View view) {
         mPeopleViewRef = new WeakReference<>(view);
 
-        loadPeople(null);
+        if (mSearchQuery != null && viewIsActive()) {
+            mPeopleViewRef.get().showSearchQuery(mSearchQuery);
+        }
+
+        loadPeople(mSearchQuery);
     }
 
     @Override
@@ -45,18 +49,29 @@ public class PeoplePresenter implements PeopleContract.Presenter {
 
     @Override
     public void loadPeople(@Nullable String searchQuery) {
-        if (viewIsActive()) {
+        String oldQuery = mSearchQuery;
+
+        if (searchQuery != null && searchQuery.isEmpty()) {
+            mSearchQuery = null;
+        } else {
+            mSearchQuery = searchQuery;
+        }
+
+        if (viewIsActive() && mSearchQuery == null) {
             mPeopleViewRef.get().showLoadingIndicator(true);
         }
 
-        if (mLoadedPeople != null && mLoadedPeople.size() > 0
-                && searchQuery == null && viewIsActive()) {
+        // If user just deleted all characters from search query, need to reload people
+        boolean reloadNeeded = (oldQuery != null && mSearchQuery == null);
+
+        if (!reloadNeeded && mLoadedPeople != null && mLoadedPeople.size() > 0
+                && mSearchQuery == null && viewIsActive()) {
 
             mPeopleViewRef.get().showLoadingIndicator(false);
             mPeopleViewRef.get().showPeople(getFilteredPeople());
 
         } else {
-            new LoadPeopleAsyncTask().execute(searchQuery);
+            new LoadPeopleAsyncTask().execute();
         }
     }
 
@@ -131,12 +146,12 @@ public class PeoplePresenter implements PeopleContract.Presenter {
         return filteredPeople;
     }
 
-    private class LoadPeopleAsyncTask extends AsyncTask<String, Void, Void> {
+    private class LoadPeopleAsyncTask extends AsyncTask<Void, Void, Void> {
         @Override
-        protected Void doInBackground(String... strings) {
+        protected Void doInBackground(Void... voids) {
             mLoadedPeople.clear();
 
-            mPeopleRepository.getPeople(strings[0], new PeopleDataSource.GetPeopleCallback() {
+            mPeopleRepository.getPeople(mSearchQuery, new PeopleDataSource.GetPeopleCallback() {
                 @Override
                 public void onPeopleLoaded(List<Person> people) {
                     mLoadedPeople.addAll(people);
@@ -191,8 +206,7 @@ public class PeoplePresenter implements PeopleContract.Presenter {
 
             if (mPlatforms != null && mLocations != null && viewIsActive()) {
                 mPeopleViewRef.get().showFilterDialog(mPlatforms, mLocations);
-            }
-            if (viewIsActive()) {
+            } else if (viewIsActive()) {
                 mPeopleViewRef.get().showUnableToFilterMessage();
             }
         }

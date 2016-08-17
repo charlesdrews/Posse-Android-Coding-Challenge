@@ -51,47 +51,49 @@ public class PeopleRepository implements PeopleDataSource {
             @Override
             public void onDataNotAvailable() {
 
-                mRemoteDataSource.getPeople(null, new GetPeopleCallback() {
-                    @Override
-                    public void onPeopleLoaded(final List<Person> people) {
+                // Careful not to re-load from remote in the case of a query w/ no results
+                if (searchQuery == null) {
 
-                        // Save people to local source
-                        for (final Person person : people) {
-                            mLocalDataSource.savePerson(person, new SavePersonCallback() {
-                                @Override
-                                public void onPersonSaved(long savedPersonId) {
-                                    Log.i(TAG, "onPersonSaved: " + person.getFirstName() +
-                                            " saved to local data source w/ id "
-                                            + savedPersonId);
-                                }
+                    mRemoteDataSource.getPeople(null, new GetPeopleCallback() {
+                        @Override
+                        public void onPeopleLoaded(final List<Person> people) {
 
-                                @Override
-                                public void onPersonNotSaved() {
-                                    Log.w(TAG, "onPersonNotSaved: error saving" +
-                                            person.getFirstName() + " to local data source");
-                                }
-                            });
-                        }
+                            // Save people to local source
+                            for (final Person person : people) {
+                                mLocalDataSource.savePerson(person, new SavePersonCallback() {
+                                    @Override
+                                    public void onPersonSaved(long savedPersonId) {
+                                        Log.i(TAG, "onPersonSaved: " + person.getFirstName() +
+                                                " saved to local data source w/ id "
+                                                + savedPersonId);
+                                    }
 
-                        // If need to apply query, use now-populated local data source
-                        if (searchQuery == null) {
-                            callback.onPeopleLoaded(people);
-                        } else {
+                                    @Override
+                                    public void onPersonNotSaved() {
+                                        Log.w(TAG, "onPersonNotSaved: error saving" +
+                                                person.getFirstName() + " to local data source");
+                                    }
+                                });
+                            }
+
+                            // This list of people doesn't include id values, since they came
+                            // straight from the remote source, not from the database.
+                            // Query the local database before returning, to be sure we have ids.
                             mLocalDataSource.getPeople(searchQuery, callback);
                         }
-                    }
 
-                    @Override
-                    public void onDataNotAvailable() {
-                        callback.onDataNotAvailable();
-                    }
-                });
+                        @Override
+                        public void onDataNotAvailable() {
+                            callback.onDataNotAvailable();
+                        }
+                    });
+                }
             }
         });
     }
 
     @Override
-    public void getPerson(@NonNull long personId, @NonNull final GetPersonDetailCallback callback) {
+    public void getPerson(long personId, @NonNull final GetPersonDetailCallback callback) {
         mLocalDataSource.getPerson(personId, new GetPersonDetailCallback() {
             @Override
             public void onPersonLoaded(Person person) {
