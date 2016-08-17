@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Charles Drews Demo App</string>
-    <string name="action_settings">Settings</string>
     <string name="activity_title">Meet the Posse Team</string>
 
+    <string name="action_settings">Settings</string>
+    <string name="action_filter">Filter</string>
+    <string name="action_search">Search</string>
+    <string name="action_reload">Reload</string>
 
     <string name="please_select_person">Please select a person to view</string>
     <string name="data_not_available">Sorry, this data is not available</string>
@@ -10,11 +13,16 @@
 
     <string name="person_list_item_description">%1$s | %2$s</string>
 
+    <string name="filter_values_unavailable_message">Unable to load filter values</string>
+    <string name="filter_dialog_title">Apply Filters</string>
+    <string name="filter_dialog_positive_button">OK</string>
+    <string name="filter_dialog_negative_button">Cancel</string>
+    <string name="platform_filter_initial_value">All platforms</string>
+    <string name="location_filter_initial_value">All locations</string>
+
     <string name="filter_label">Filters:</string>
     <string name="platform_filter_title">Select a platform to filter</string>
-    <string name="platform_filter_initial_value">All platforms</string>
     <string name="location_filter_title">Select a location to filter</string>
-    <string name="location_filter_initial_value">All locations</string>
 
     <string name="platform_label">Platform: </string>
     <string name="location_label">Location: </string>

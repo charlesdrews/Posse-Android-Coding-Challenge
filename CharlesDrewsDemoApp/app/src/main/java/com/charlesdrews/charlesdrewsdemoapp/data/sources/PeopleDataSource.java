@@ -27,8 +27,8 @@ public interface PeopleDataSource {
         void onPersonNotSaved();
     }
 
-    interface GetLocationAndServiceValuesCallback {
-        void onLocationAndServiceValuesLoaded(List<String> locations, List<String> services);
+    interface GetPlatformAndLocationValuesCallback {
+        void onPlatformAndLocationValuesLoaded(List<String> platforms, List<String> locations);
         void onDataNotAvailable();
     }
 
@@ -38,5 +38,5 @@ public interface PeopleDataSource {
 
     void savePerson(@NonNull Person person, @NonNull SavePersonCallback callback);
 
-    void getLocationAndServiceValues(@NonNull GetLocationAndServiceValuesCallback callback);
+    void getPlatformAndLocationValues(@NonNull GetPlatformAndLocationValuesCallback callback);
 }

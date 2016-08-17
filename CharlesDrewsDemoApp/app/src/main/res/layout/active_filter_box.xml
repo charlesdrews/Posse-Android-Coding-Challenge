@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/active_filter_box"
+    android:visibility="gone"
+    android:gravity="center"
+    android:textColor="@color/activeFilterBoxContent"
+    android:paddingLeft="@dimen/active_filter_box_left_padding"
+    android:paddingStart="@dimen/active_filter_box_left_padding"
+    android:paddingRight="@dimen/active_filter_box_right_padding"
+    android:paddingEnd="@dimen/active_filter_box_right_padding"
+    android:paddingTop="@dimen/active_filter_box_topBottom_padding"
+    android:paddingBottom="@dimen/active_filter_box_topBottom_padding"
+    android:background="@drawable/active_filter_box"
+    android:drawableRight="@drawable/ic_highlight_off_24dp"
+    android:drawableEnd="@drawable/ic_highlight_off_24dp"
+    android:drawablePadding="@dimen/active_filter_box_drawable_padding"
+    android:layout_marginLeft="@dimen/active_filter_box_left_margin"
+    android:layout_marginStart="@dimen/active_filter_box_left_margin"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>

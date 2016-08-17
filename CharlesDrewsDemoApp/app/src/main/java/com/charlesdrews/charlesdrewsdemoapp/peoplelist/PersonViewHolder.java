@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.charlesdrews.charlesdrewsdemoapp.ColorUtil;
+import com.charlesdrews.charlesdrewsdemoapp.util.ColorUtil;
 import com.charlesdrews.charlesdrewsdemoapp.R;
 import com.charlesdrews.charlesdrewsdemoapp.data.Person;
 import com.charlesdrews.charlesdrewsdemoapp.peoplelist.interfaces.DataBinder;

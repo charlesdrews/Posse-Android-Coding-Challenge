@@ -1,4 +1,4 @@
-package com.charlesdrews.charlesdrewsdemoapp;
+package com.charlesdrews.charlesdrewsdemoapp.util;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;

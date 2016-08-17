@@ -151,8 +151,25 @@ public class PeopleLocalDataSource implements PeopleDataSource {
     }
 
     @Override
-    public void getLocationAndServiceValues(@NonNull GetLocationAndServiceValuesCallback callback) {
+    public void getPlatformAndLocationValues(@NonNull GetPlatformAndLocationValuesCallback callback) {
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
+
+        // Group by platform to get a distinct list of platforms
+        Cursor platformCursor = db.query(DatabaseContract.PersonTable.TABLE_NAME,
+                new String[]{DatabaseContract.PersonTable.COL_NAME_PLATFORM},
+                null, null, DatabaseContract.PersonTable.COL_NAME_PLATFORM, null,
+                DatabaseContract.PersonTable.COL_NAME_PLATFORM);
+
+        List<String> platformNames = new ArrayList<>(platformCursor.getCount());
+
+        if (platformCursor.moveToFirst()) {
+            int columnIndex = platformCursor.getColumnIndex(DatabaseContract.PersonTable.COL_NAME_PLATFORM);
+
+            while (!platformCursor.isAfterLast()) {
+                platformNames.add(platformCursor.getString(columnIndex));
+                platformCursor.moveToNext();
+            }
+        }
 
         // Group by locality to get a distinct list of locations
         Cursor locationCursor = db.query(DatabaseContract.PersonTable.TABLE_NAME,
@@ -171,31 +188,15 @@ public class PeopleLocalDataSource implements PeopleDataSource {
             }
         }
 
-        // Group by platform to get a distinct list of platforms
-        Cursor serviceCursor = db.query(DatabaseContract.PersonTable.TABLE_NAME,
-                new String[]{DatabaseContract.PersonTable.COL_NAME_PLATFORM},
-                null, null, DatabaseContract.PersonTable.COL_NAME_PLATFORM, null,
-                DatabaseContract.PersonTable.COL_NAME_PLATFORM);
 
-        List<String> platformNames = new ArrayList<>(serviceCursor.getCount());
-
-        if (serviceCursor.moveToFirst()) {
-            int columnIndex = serviceCursor.getColumnIndex(DatabaseContract.PersonTable.COL_NAME_PLATFORM);
-
-            while (!serviceCursor.isAfterLast()) {
-                platformNames.add(serviceCursor.getString(columnIndex));
-                serviceCursor.moveToNext();
-            }
-        }
-
+        platformCursor.close();
         locationCursor.close();
-        serviceCursor.close();
         db.close();
 
-        if (locationNames.size() == 0 && platformNames.size() == 0) {
+        if (platformNames.size() == 0 && locationNames.size() == 0) {
             callback.onDataNotAvailable();
         } else {
-            callback.onLocationAndServiceValuesLoaded(locationNames, platformNames);
+            callback.onPlatformAndLocationValuesLoaded(platformNames, locationNames);
         }
     }
 
@@ -225,6 +226,7 @@ public class PeopleLocalDataSource implements PeopleDataSource {
         }
 
         //TODO - check what happens if I call getter on field that wasn't set
+        Log.d("LocalData", "test field not set: " + people.get(0).getPhoneNumber());
 
         return people;
     }

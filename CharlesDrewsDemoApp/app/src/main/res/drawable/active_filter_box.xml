@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/active_filter_box_corner_radius"/>
+    <stroke android:color="@color/colorPrimaryDark"
+            android:width="@dimen/active_filter_box_stroke_width"/>
+    <solid android:color="@color/colorAccent"/>
+</shape>

@@ -49,22 +49,6 @@ public class PeopleActivity extends AppCompatActivity implements OnPersonSelecte
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_people_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public void onPersonSelected(long personId) {
         if (mTwoPanesMode) {
             mPersonDetailFragment.loadPerson(personId);

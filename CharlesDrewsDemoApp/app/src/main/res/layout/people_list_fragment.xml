@@ -13,7 +13,9 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.CardView
-            app:cardElevation="@dimen/sub_menu_bar_elevation"
+            android:id="@+id/filter_bar"
+            android:visibility="gone"
+            app:cardElevation="@dimen/filter_bar_elevation"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
@@ -34,25 +36,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <Spinner
-                    android:id="@+id/platform_filter_spinner"
-                    android:prompt="@string/platform_filter_title"
-                    android:spinnerMode="dialog"
-                    android:layout_marginLeft="@dimen/people_list_filter_search_margin"
-                    android:layout_marginStart="@dimen/people_list_filter_search_margin"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.25"
-                    android:layout_height="wrap_content"/>
+                <include
+                    android:id="@+id/active_platform_filter"
+                    layout="@layout/active_filter_box"/>
 
-                <Spinner
-                    android:id="@+id/location_filter_spinner"
-                    android:prompt="@string/location_filter_title"
-                    android:spinnerMode="dialog"
-                    android:layout_marginLeft="@dimen/people_list_filter_search_margin"
-                    android:layout_marginStart="@dimen/people_list_filter_search_margin"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.25"
-                    android:layout_height="wrap_content"/>
+                <include
+                    android:id="@+id/active_location_filter"
+                    layout="@layout/active_filter_box"/>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>

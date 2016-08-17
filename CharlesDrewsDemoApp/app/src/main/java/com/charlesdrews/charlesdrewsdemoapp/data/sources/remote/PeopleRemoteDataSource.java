@@ -126,7 +126,7 @@ public class PeopleRemoteDataSource implements PeopleDataSource {
      * @param callback
      */
     @Override
-    public void getLocationAndServiceValues(@NonNull GetLocationAndServiceValuesCallback callback) {
+    public void getPlatformAndLocationValues(@NonNull GetPlatformAndLocationValuesCallback callback) {
         callback.onDataNotAvailable();
     }
 }

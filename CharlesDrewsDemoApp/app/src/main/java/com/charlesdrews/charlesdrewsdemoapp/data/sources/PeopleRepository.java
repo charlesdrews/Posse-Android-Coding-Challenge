@@ -121,11 +121,11 @@ public class PeopleRepository implements PeopleDataSource {
     }
 
     @Override
-    public void getLocationAndServiceValues(@NonNull final GetLocationAndServiceValuesCallback callback) {
-        mLocalDataSource.getLocationAndServiceValues(new GetLocationAndServiceValuesCallback() {
+    public void getPlatformAndLocationValues(@NonNull final GetPlatformAndLocationValuesCallback callback) {
+        mLocalDataSource.getPlatformAndLocationValues(new GetPlatformAndLocationValuesCallback() {
             @Override
-            public void onLocationAndServiceValuesLoaded(List<String> locations, List<String> services) {
-                callback.onLocationAndServiceValuesLoaded(locations, services);
+            public void onPlatformAndLocationValuesLoaded(List<String> platforms, List<String> locations) {
+                callback.onPlatformAndLocationValuesLoaded(platforms, locations);
             }
 
             @Override

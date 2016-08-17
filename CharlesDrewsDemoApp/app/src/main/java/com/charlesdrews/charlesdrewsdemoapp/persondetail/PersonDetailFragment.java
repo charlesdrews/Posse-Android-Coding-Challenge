@@ -6,10 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.charlesdrews.charlesdrewsdemoapp.ColorUtil;
+import com.charlesdrews.charlesdrewsdemoapp.util.ColorUtil;
 import com.charlesdrews.charlesdrewsdemoapp.Injection;
 import com.charlesdrews.charlesdrewsdemoapp.PresenterCache;
 import com.charlesdrews.charlesdrewsdemoapp.R;
@@ -76,6 +74,8 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
         }
 
         mTwoPaneMode = getArguments().getBoolean(TWO_PANE_MODE_KEY);
+
+        setHasOptionsMenu(!mTwoPaneMode); // If in single-pane, fragment will control menu
     }
 
     @Override
