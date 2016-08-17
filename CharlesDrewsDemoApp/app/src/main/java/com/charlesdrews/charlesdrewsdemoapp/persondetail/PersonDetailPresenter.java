@@ -19,6 +19,7 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter {
     private WeakReference<PersonDetailContract.View> mPersonViewRef;
     private PeopleRepository mPeopleRepository;
     private Person mLoadedPerson;
+    private boolean mCurrentlyLoading = false;
 
     public PersonDetailPresenter(PeopleRepository peopleRepository) {
         mPeopleRepository = peopleRepository;
@@ -28,10 +29,12 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter {
     public void bindView(@NonNull PersonDetailContract.View view) {
         mPersonViewRef = new WeakReference<>(view);
 
-        if (mLoadedPerson != null) {
-            showLoadedPerson();
-        } else {
-            mPersonViewRef.get().showSelectAPersonMessage();
+        if (!mCurrentlyLoading) {
+            if (mLoadedPerson != null) {
+                showLoadedPerson();
+            } else {
+                mPersonViewRef.get().showSelectAPersonMessage();
+            }
         }
     }
 
@@ -84,6 +87,12 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter {
     private class LoadPersonAsyncTask extends AsyncTask<Long, Void, Void> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mCurrentlyLoading = true;
+        }
+
+        @Override
         protected Void doInBackground(Long... longs) {
             mLoadedPerson = null;
             mPeopleRepository.getPerson(longs[0], new PeopleDataSource.GetPersonDetailCallback() {
@@ -111,6 +120,7 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter {
                 }
             }
 
+            mCurrentlyLoading = false;
         }
     }
 }

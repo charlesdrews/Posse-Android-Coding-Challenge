@@ -13,17 +13,22 @@ public class PersonDetailActivity extends AppCompatActivity {
         setContentView(R.layout.person_detail_activity);
 
         // Set up fragment
-        PersonDetailFragment personDetailFragment;
+        if (findViewById(R.id.person_detail_fragment_container) != null) {
+            PersonDetailFragment personDetailFragment;
 
-        long selectedPersonId = getIntent().getLongExtra(PersonDetailFragment.PERSON_ID_KEY, -1);
-        if (selectedPersonId == -1) {
-            personDetailFragment = PersonDetailFragment.newInstance(false, null);
+            long selectedPersonId = getIntent().getLongExtra(PersonDetailFragment.PERSON_ID_KEY, -1);
+            if (selectedPersonId == -1) {
+                personDetailFragment = PersonDetailFragment.newInstance(false, null);
+            } else {
+                personDetailFragment = PersonDetailFragment.newInstance(false, selectedPersonId);
+            }
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.person_detail_fragment_container, personDetailFragment)
+                    .commit();
         } else {
-            personDetailFragment = PersonDetailFragment.newInstance(false, selectedPersonId);
+            // If the container is not present, should be in two-pane mode in the PeopleActivity
+            finish();
         }
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.person_detail_fragment_container, personDetailFragment)
-                .commit();
     }
 }

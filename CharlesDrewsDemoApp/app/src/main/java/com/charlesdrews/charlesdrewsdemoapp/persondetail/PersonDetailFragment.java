@@ -6,10 +6,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -72,7 +76,6 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
         }
 
         mTwoPaneMode = getArguments().getBoolean(TWO_PANE_MODE_KEY);
-        Log.d(TAG, "onCreate: two pane? " + mTwoPaneMode);
     }
 
     @Override
@@ -122,6 +125,21 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_person_detail, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void showLoadingIndicator(boolean show) {
         mDataContainer.setVisibility(show ? View.GONE : View.VISIBLE);
         mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -153,7 +171,7 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
     @Override
     public void showName(String name) {
         updateVisibilityToDisplayData();
-        mToolbar.setTitle(name);
+        mToolbarLayout.setTitle(name);
     }
 
     @Override

@@ -26,11 +26,13 @@ public class PeopleRvItemDecoration extends RecyclerView.ItemDecoration {
                                RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
 
-        if (parent.getChildAdapterPosition(view) == 0) {
-            return; // don't change outRect if it's the first item in the list
-        }
+        outRect.top = (int) mMargin;
+        outRect.bottom = (int) mMargin;
 
-        outRect.top = ((int) mMargin) * 2 + mDivider.getIntrinsicHeight();
+        if (parent.getChildAdapterPosition(view) > 0) {
+            // If not first item, also add space above for divider line
+            outRect.top += mDivider.getIntrinsicHeight();
+        }
     }
 
     @Override
@@ -39,6 +41,8 @@ public class PeopleRvItemDecoration extends RecyclerView.ItemDecoration {
         int dividerRight = parent.getWidth() - parent.getPaddingRight();
 
         int childCount = parent.getChildCount();
+
+        // Start with first item and draw divider below each item; stop before last item
         for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i);
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
