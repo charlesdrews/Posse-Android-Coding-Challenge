@@ -72,8 +72,10 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter {
                 .append(mLoadedPerson.getCountry());
         mPersonViewRef.get().showLocationDetails(builder.toString());
 
+        String phoneNum = formatPhoneNumber(mLoadedPerson.getPhoneNumber());
+
         builder = new StringBuilder();
-        builder.append("Phone number: ").append(mLoadedPerson.getPhoneNumber()).append("\n\n")
+        builder.append("Phone: ").append(phoneNum).append("\n\n")
                 .append("Favorite color: ").append(mLoadedPerson.getFavoriteColor()).append("\n\n")
                 .append("Age: ").append(mLoadedPerson.getAge()).append("\n\n")
                 .append("Weight: ").append(mLoadedPerson.getWeight());
@@ -82,6 +84,23 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter {
 
     private boolean viewIsActive() {
         return mPersonViewRef != null && mPersonViewRef.get() != null;
+    }
+
+    private String formatPhoneNumber(String phoneNum) {
+        // Remove non-digits and format nicely
+        phoneNum = phoneNum.replaceAll("\\D","");
+        if (phoneNum.length() > 10) {
+            return String.format("+%s (%s) %s-%s", phoneNum.substring(0, phoneNum.length() - 10),
+                    phoneNum.substring(phoneNum.length() - 10, phoneNum.length() - 7),
+                    phoneNum.substring(phoneNum.length() - 7, phoneNum.length() - 4),
+                    phoneNum.substring(phoneNum.length() - 4));
+        } else if (phoneNum.length() == 10) {
+            return String.format("(%s) %s-%s", phoneNum.substring(0, 3),
+                    phoneNum.substring(3, 6), phoneNum.substring(6));
+        } else {
+            return String.format("%s-%s", phoneNum.substring(0, phoneNum.length() - 4),
+                    phoneNum.substring(phoneNum.length() - 4));
+        }
     }
 
     private class LoadPersonAsyncTask extends AsyncTask<Long, Void, Void> {
