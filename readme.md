@@ -29,7 +29,7 @@
 - On a large enough screen (width >= 820 dp) the list and detail panes will appear side by side. On smaller devices, each pane will be on a separate screen.
 
 - User can search through people by providing a search query
-  - Search returns user's whose name, location, platform, and/or favorite color match the provided query
+  - Search returns users whose name, location, platform, and/or favorite color match the search query
   - Searches persist across orientation changes, and when returning from the detail screen on a small device
 
 - User can filter people by platform and location
