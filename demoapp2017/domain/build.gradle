@@ -1,0 +1,15 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Dependency injection
+    implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
+    api "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"

@@ -1,0 +1,51 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // Android
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+
+    // Testing
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "com.android.support.test:runner:$rootProject.testRunnerVersion"
+
+    // Room database
+    implementation "android.arch.persistence.room:runtime:$rootProject.androidArchVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.androidArchVersion"
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.androidArchVersion"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+
+    // Domain module
+    // (Note the UI module is NOT a dependency here. Communication btwn this module and that one
+    //  will flow thru the UseCases in the Domain module.)
+    implementation project(':domain')
+}
