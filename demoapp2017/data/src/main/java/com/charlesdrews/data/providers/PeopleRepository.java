@@ -3,7 +3,7 @@ package com.charlesdrews.data.providers;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.LiveDataReactiveStreams;
 
-import com.charlesdrews.domain.interfaces.PeopleProvider;
+import com.charlesdrews.domain.interfaces.PeopleSource;
 import com.charlesdrews.data.resources.db.room.PersonDao;
 import com.charlesdrews.domain.entities.Person;
 
@@ -15,7 +15,7 @@ import javax.inject.Singleton;
  */
 
 @Singleton
-public class PeopleRepository implements PeopleProvider {
+public class PeopleRepository implements PeopleSource {
     private final PersonDao personDao;
 
     @Inject

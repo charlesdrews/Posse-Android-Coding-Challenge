@@ -14,7 +14,7 @@ import io.reactivex.Observable;
  * Created by charlie on 11/28/17.
  */
 
-public interface PeopleProvider {
+public interface PeopleSource {
     Observable<List<Person>> getPeople(long filterLocationId, long filterPlatformId);
     Observable<Person> getPerson(long personId);
     Observable<List<Location>> getLocations();

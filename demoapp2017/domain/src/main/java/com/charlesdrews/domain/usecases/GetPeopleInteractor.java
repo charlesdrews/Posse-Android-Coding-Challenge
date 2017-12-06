@@ -1,7 +1,7 @@
 package com.charlesdrews.domain.usecases;
 
 import com.charlesdrews.domain.entities.Person;
-import com.charlesdrews.domain.interfaces.PeopleProvider;
+import com.charlesdrews.domain.interfaces.PeopleSource;
 import com.charlesdrews.domain.interfaces.UseCase;
 
 import java.util.List;
@@ -11,23 +11,23 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 
 /**
- * Implements the use case of retrieving people from a repository that satisfies the PeopleProvider contract
+ * Implements the use case of retrieving people from a repository that satisfies the PeopleSource contract
  * <p>
  * Created by charlie on 11/28/17.
  */
 
 public class GetPeopleInteractor implements UseCase<GetPeopleInteractor.Request, List<Person>> {
 
-    private final PeopleProvider peopleProvider;
+    private final PeopleSource peopleSource;
 
     @Inject
-    public GetPeopleInteractor(PeopleProvider peopleProvider) {
-        this.peopleProvider = peopleProvider;
+    public GetPeopleInteractor(PeopleSource peopleSource) {
+        this.peopleSource = peopleSource;
     }
 
     @Override
     public Observable<List<Person>> execute(Request request) {
-        return peopleProvider.getPeople(request.getFilterLocationId(), request.getFilterPlatformId());
+        return peopleSource.getPeople(request.getFilterLocationId(), request.getFilterPlatformId());
     }
 
 

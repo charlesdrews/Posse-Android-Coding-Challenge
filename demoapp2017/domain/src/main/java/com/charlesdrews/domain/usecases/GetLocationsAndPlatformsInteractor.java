@@ -2,7 +2,7 @@ package com.charlesdrews.domain.usecases;
 
 import com.charlesdrews.domain.entities.Location;
 import com.charlesdrews.domain.entities.Platform;
-import com.charlesdrews.domain.interfaces.PeopleProvider;
+import com.charlesdrews.domain.interfaces.PeopleSource;
 import com.charlesdrews.domain.interfaces.UseCase;
 
 import java.util.List;
@@ -13,24 +13,24 @@ import io.reactivex.Observable;
 
 /**
  * Implements the use case of retrieving a list of existing locations and platforms
- * from a repository that satisfies the PeopleProvider contract
+ * from a repository that satisfies the PeopleSource contract
  * <p>
  * Created by charlie on 12/6/17.
  */
 
 public class GetLocationsAndPlatformsInteractor implements UseCase<Void, GetLocationsAndPlatformsInteractor.Response> {
 
-    private final PeopleProvider peopleProvider;
+    private final PeopleSource peopleSource;
 
     @Inject
-    public GetLocationsAndPlatformsInteractor(PeopleProvider peopleProvider) {
-        this.peopleProvider = peopleProvider;
+    public GetLocationsAndPlatformsInteractor(PeopleSource peopleSource) {
+        this.peopleSource = peopleSource;
     }
 
     @Override
     public Observable<Response> execute(Void aVoid) {
-        Observable<List<Location>> locations = peopleProvider.getLocations();
-        Observable<List<Platform>> platforms = peopleProvider.getPlatforms();
+        Observable<List<Location>> locations = peopleSource.getLocations();
+        Observable<List<Platform>> platforms = peopleSource.getPlatforms();
         return Observable.zip(locations, platforms, Response::new);
     }
 

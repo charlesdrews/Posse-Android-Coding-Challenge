@@ -10,6 +10,6 @@ import io.reactivex.Observable;
  * Created by charlie on 11/28/17.
  */
 
-public interface ContactInfoProvider {
+public interface ContactInfoSource {
     Observable<ContactInfo> getContactInfo();
 }
